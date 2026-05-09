@@ -2,13 +2,16 @@ const express = require('express');
 const app = express();
 const { PORT } = require('./Config/server_config.js');
 const connect = require('./Config/database_config.js');
-const cors = require('cors');
 const apiRoutes = require('./Route/index.js');
-const bodyParser = require('body-parser');
 const { Server } = require('socket.io');
-
+const cors=require('cors');
 const Chat = require('./Model/chat.js');
 const Message = require('./Model/message.js');
+
+
+
+
+
 
 app.set('view engine', 'ejs');
 app.set('views', './views');
@@ -17,9 +20,15 @@ const StartServer = async () => {
 
     try {
 
-        app.use(cors());
-        app.use(bodyParser.json());
-        app.use(bodyParser.urlencoded({ extended: true }));
+        
+        app.use(cors({
+        origin: "http://localhost:5173",
+        credentials: true,
+        }));
+
+       
+        app.use(express.json());
+        app.use(express.urlencoded({ extended: true }));
 
         app.use('/api', apiRoutes);
 
@@ -37,16 +46,17 @@ const StartServer = async () => {
 
         
         const server = app.listen(PORT, () => {
-            console.log(`server started successfully on ${PORT}`);
+            console.log(`server started successfully on site http://localhost:${PORT}`);
             connect();
         });
 
         
         const io = new Server(server, {
             pingTimeout: 60000,
-            cors: {
-                origin: "*"
-            }
+                cors: {
+                    origin: "http://localhost:5173",
+                    credentials: true,
+                }
         });
 
        

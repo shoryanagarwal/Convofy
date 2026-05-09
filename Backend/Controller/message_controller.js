@@ -89,7 +89,7 @@ const getMessage = async(req,res)=>{
 
     try {
         const {chatId} =req.params;
-        let message= await message.find({
+        let message= await Message.find({
             chat:chatId
         })
         .populate('sender','avatar username')

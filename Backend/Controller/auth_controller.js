@@ -110,7 +110,7 @@ const LoginUser = async(req,res)=>{
         const token= jwt.sign(
             {id: user._id},
             JWT_SECRET,
-            {expiresIn:'7d'}
+            {expiresIn:'1m'}
         )
 
 

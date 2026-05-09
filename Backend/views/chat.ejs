@@ -84,14 +84,19 @@
 
         // for chats loading
 
-        async function laodChats(){
+        async function loadChats(){
 
             try {
-                const response=await fetch(`/api/v1/message/${chatId}`);
+                const response=await fetch(`/api/message/${chatId}`,{
+                    method:"GET",
+                    headers:{
+                        "Content-Type":"application/json"
+                    }
+                });
                 const data=await response.json();
 
                 if(data.success){
-                    const messages=data.chat.messages;
+                    const messages=data.data;
                     for(let i=0;i<messages.length;i++){
                         addmessage(messages[i].sender.username + " : " + messages[i].content);
                     }
@@ -110,7 +115,7 @@
         }
 
 
-        laodChats();
+        loadChats();
 
     </script>
   
