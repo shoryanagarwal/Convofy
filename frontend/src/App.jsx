@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import Auth from "./Auth/Auth.jsx";
-import Dashboard from "./Dashboard/Dashboard.jsx";
+import Dashboard from "./Pages/Dashboard.jsx";
 import { isTokenValid } from "./utils/auth.js";
 
 function App() {
