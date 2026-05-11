@@ -15,10 +15,13 @@ const connect=async ()=>{
         console.log("mongodb connected successfully");
 
         return repsonse;
+       
+        
     } 
     
     catch (error) {
-    
+        console.log(error);
+        
         console.log('unable to connect to the server');
         
 

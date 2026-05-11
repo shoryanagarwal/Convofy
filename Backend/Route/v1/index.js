@@ -3,7 +3,7 @@ const express=require('express');
 const router=express.Router();
 
 const authMiddleware=require('../../Middleware/AuthMiddleware.js');
-
+const {getAllUsers} = require('../../Controller/usercontroller.js')
 const {registerUser,LoginUser} = require('../../Controller/auth_controller.js')
 
 const {oneOnOneChat,userChat}=require('../../Controller/chatcontroller.js')
@@ -17,8 +17,9 @@ router.post('/chat/oneonone',authMiddleware,oneOnOneChat);
 router.get('/chat',authMiddleware,userChat);
 
 router.post('/message',authMiddleware,sendMessage);
-router.get('/message/:chatId',getMessage);
+router.get('/message/:chatId',authMiddleware,getMessage);
 
 
+router.get('/users',getAllUsers);
 
 module.exports=router;

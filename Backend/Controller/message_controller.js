@@ -4,119 +4,110 @@ const Chat = require('../Model/chat.js');
 
 
 
-const sendMessage = async(req,res)=>{
+
+
+const sendMessage = async (req, res) => {
 
     try {
-        console.log(req.user);
-        
-        
-        const {content,chatId} = req.body;
 
-        if(!content || !chatId){
+        const { content, chatId } = req.body;
+
+        if (!content || !chatId) {
+
             return res.status(400).json({
-                success:false,
-                message:"Content and chatId are required",
-                data:{}
-            })
+                success: false,
+                message: "All fields required"
+            });
         }
 
+        // CREATE MESSAGE
 
-        
-        let newMessage=await Message.create({
-            sender:req.user.id,
-            content,
-            chat:chatId,
+        let message = await Message.create({
 
-        })
+            sender: req.user.id,
+            content: content,
+            chat: chatId
 
-        console.log(newMessage);
+        });
 
-        console.log("before populate");
-        
-        
+        // POPULATE SENDER
 
-        newMessage=await newMessage.populate("sender", "username avatar"); // populating sender details
-        
-        console.log(newMessage.chat);
-        
-       
-        
-        
-        newMessage=await newMessage.populate({ // populating chat users details
-             path: "chat",
-                populate: {
-                    path: "users",
-                    select: "username avatar"
-                } // fields to select 
-        })
-        console.log(newMessage);
-        
+        message = await message.populate(
+            "sender",
+            "username "
+        );
 
-        await Chat.findByIdAndUpdate(chatId,{
-            latestMessage:newMessage._id // updating latest message in chat
-        })
+        // POPULATE CHAT
 
+        message = await message.populate("chat");
 
+        // UPDATE LATEST MESSAGE
 
-    return res.status(201).json({
-      success: true,
-      data: newMessage,
-    });
+        await Chat.findByIdAndUpdate(chatId, {
 
+            latestMessage: message._id
 
+        });
 
-    }
+        return res.status(201).json({
 
-    
-    
-    
-    catch (error) {
-        
-        return res.status(500).json({
-      success: false,
-      message: error.message,
-    });
-    
-    
-    }
+            success: true,
+            data: message
 
-
-
-}
-
-
-const getMessage = async(req,res)=>{
-
-    try {
-        const {chatId} =req.params;
-        let message= await Message.find({
-            chat:chatId
-        })
-        .populate('sender','avatar username')
-        .populate('chat')
-
-        return res.status(200).json({
-            success:true,
-            message:'messages fetched successfully',
-            data:message
-        })
+        });
 
     } 
     
+    catch (error) {
+
+        console.log(error);
+
+        return res.status(500).json({
+
+            success: false,
+            message: "Unable to send message"
+
+        });
+    }
+};
+
+
+
+const getMessage = async (req, res) => {
+
+    try {
+
+        const { chatId } = req.params;
+
+        const messages = await Message.find({
+
+            chat: chatId
+
+        })
+        .populate("sender", "username ")
+        .sort({ createdAt: 1 });
+
+        return res.status(200).json({
+
+            success: true,
+            data: messages
+
+        });
+
+    } 
     
     catch (error) {
 
+        console.log(error);
+
         return res.status(500).json({
-            success:false,
-            message:error.message,
-            data:{},
-            err:error
-        })
 
+            success: false,
+            message: "Unable to fetch messages"
+
+        });
     }
-
-
-}
+};
 
 
 module.exports ={

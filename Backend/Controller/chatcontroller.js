@@ -27,16 +27,18 @@ const oneOnOneChat=async(req,res)=>{
 
         
         
-        let chat =await Chat.findOne({
+       let chat = await Chat.findOne({
 
-            
-            isGroupChat:false,
-            users:{$all:[req.user._id,userId]}
+    isGroupChat: false,
 
+    users: {
+        $size: 2,
+        $all: [req.user.id, userId]
+    }
 
-
-
-        }).populate("users","-password").populate("latestMessage");
+})
+.populate("users", "-password")
+.populate("latestMessage");
         
         if(chat){
 
@@ -51,7 +53,6 @@ const oneOnOneChat=async(req,res)=>{
 
 
         }
-        console.log("hi");
         
         
 
@@ -61,7 +62,7 @@ const oneOnOneChat=async(req,res)=>{
         const newChat= await Chat.create({
             chatName:'',
             isGroupChat:false,
-            users:[req.user._id,userId]
+            users:[req.user.id,userId]
         })
 
         console.log(newChat);
@@ -71,7 +72,7 @@ const oneOnOneChat=async(req,res)=>{
         
 
 
-        const fullChat = await Chat.findOne({_id:newChat._id}).populate("users","-password")
+         const fullChat = await Chat.findById(newChat._id).populate("users", "-password");
 
         res.status(201).json({
             success:true,
@@ -209,42 +210,14 @@ const userChat=async(req,res)=>{
 }
 
 
-const getMessages=async(req,res)=>{
-
-    try {
-        
-
-        const {chatId}=req.params;
-
-       let messages = await Message.find({ chat: chatId })
-        .populate("sender", "username")
-        .populate("chat");
-         res.status(200).json({
-            success: true,
-            data: messages
-        });
 
 
-    } 
-    catch (error) {
-        console.log("unable to get messages");
-            return res.status(500).json({
-                success:false,
-                message:"unable to get messages",
-                data:{},
-                err:error
-             })
-    }
-
-
-
-}
 
 
 module.exports={
     oneOnOneChat,
     groupChat,
     userChat,
-    getMessages
+    
     
 }

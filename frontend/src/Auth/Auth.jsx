@@ -38,11 +38,25 @@ const Auth = ({ setToken }) => {
 
         localStorage.setItem("token", token);
         setToken(token);
+
+
         console.log("TOKEN:", localStorage.getItem("token"));
+        
         setTimeout(() => {
             navigate("/dashboard");
-        }, 100);
-      } else {
+        
+        
+          }, 100);
+      
+          localStorage.setItem(
+              "user",
+              JSON.stringify(response.data.data.user)
+          );
+      
+        } 
+        
+        //signup
+        else {
         console.log(formData);
         
         const response = await API.post("/signup", {
