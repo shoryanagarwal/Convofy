@@ -167,14 +167,27 @@ const getRequest=async(req,res)=>{
     try {
             const {userId}=req.params;// params-> /request/:userId
 
-            const requests = await Request.find({receiver:userId}).populate('sender','name email');
-            return res.status(200).json({
-                message:"Request fetched successfully",
-                data:requests,
-                err:{},
-                success:true
-            })
+            const request = await Request.find({
 
+                status: 'pending',
+
+                receiver: userId
+
+
+
+
+
+            }).populate('sender','username')
+
+        return res.status(200).json({
+            data:request,
+            message:"Request fetched successfully",
+            err:{},
+            success:true
+
+
+
+        })
 
 
     } 

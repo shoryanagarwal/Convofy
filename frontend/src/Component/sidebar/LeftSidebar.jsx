@@ -1,6 +1,8 @@
 import React from "react";
-import RequestPanel from "../request/request.jsx";
-const LeftSidebar = () => {
+
+const LeftSidebar = ({
+  setActivePanel
+}) => {
 
   const handleLogout = () => {
 
@@ -10,23 +12,53 @@ const LeftSidebar = () => {
   };
 
   return (
+
     <div className="w-[220px] bg-[#111111] border-r border-[#1f1f1f] flex flex-col justify-between">
 
       <div>
 
         <div className="h-[70px] flex items-center px-6 border-b border-[#1f1f1f]">
+
           <h1 className="text-2xl font-bold">
             Convo
             <span className="text-yellow-400">
               fy
             </span>
           </h1>
+
         </div>
 
         <div className="flex flex-col gap-2 p-4">
 
-          <button className="h-[45px] rounded-lg bg-[#1a1a1a] text-left px-4">
+          <button
+            onClick={() =>
+              setActivePanel("search")
+            }
+            className="h-[45px] rounded-lg bg-[#1a1a1a] text-left px-4"
+          >
+            Search
+          </button>
+
+
+           <button
+            onClick={() =>
+              setActivePanel("chats")
+            }
+            className="h-[45px] rounded-lg bg-[#1a1a1a] text-left px-4"
+          >
             Chats
+          </button>
+
+
+
+
+          <button
+            onClick={() =>
+              setActivePanel("requests")
+            }
+            className="h-[45px] rounded-lg text-left px-4 hover:bg-[#1a1a1a]"
+          >
+            Requests
           </button>
 
           <button className="h-[45px] rounded-lg text-left px-4 hover:bg-[#1a1a1a]">
@@ -40,13 +72,6 @@ const LeftSidebar = () => {
           <button className="h-[45px] rounded-lg text-left px-4 hover:bg-[#1a1a1a]">
             Settings
           </button>
-
-
-           <button className="h-[45px] rounded-lg text-left px-4 hover:bg-[#1a1a1a]">
-            <RequestPanel />
-          </button>
-
-
 
         </div>
       </div>
