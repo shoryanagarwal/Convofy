@@ -52,12 +52,15 @@ const StartServer = async () => {
 
         
         const io = new Server(server, {
+           
             pingTimeout: 60000,
                 cors: {
                     origin: "http://localhost:5173",
                     credentials: true,
                 }
         });
+
+        app.set("io", io);
 
        
         io.on('connection', (socket) => {
@@ -68,6 +71,9 @@ const StartServer = async () => {
             });
 
             socket.on('setup', (userData) => {
+
+
+                if(!userData || !userData._id) return;
                 socket.join(userData._id);
                 socket.emit('connected');
             });
@@ -102,7 +108,7 @@ const StartServer = async () => {
                     });
 
                     socket.to(chatId).emit('message received', message);
-                    socket.emit('message received', message);
+                    
 
                 } catch (error) {
                     console.log("SOCKET ERROR:", error);

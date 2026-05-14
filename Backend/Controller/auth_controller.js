@@ -43,12 +43,25 @@ const registerUser=async(req,res)=>{
 
         newUser.password = undefined;
 
-        return res.status(201).json({
+       
+        //generate the token and send to the user
+
+        const token = jwt.sign(
+            {id: newUser._id},
+            JWT_SECRET,
+            {expiresIn:'7d'}
+        )
+
+
+         return res.status(201).json({
             success:true,
             message:'user created successfully',
-            data:newUser,
+            data:{user:newUser,
+                token
+            },
             err:{}
         })
+
 
 
     } 

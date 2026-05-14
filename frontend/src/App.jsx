@@ -2,33 +2,96 @@ import { useEffect, useState } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import Auth from "./Auth/Auth.jsx";
 import Dashboard from "./Pages/Dashboard.jsx";
+import api from "./Api/axios.js";
 import { isTokenValid } from "./utils/auth.js";
-
+import ProtectedRoute from "./ProtectedRoutes.jsx";
 function App() {
-  const [token, setToken] = useState(isTokenValid());
+   const [loading, setLoading] =useState(true);
+  const [token, setToken] =useState(false);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      const valid = isTokenValid();
 
-      if (!valid) {
-        setToken(false); // 👈 force logout
-      }
-    }, 5000); // check every 5 sec
+  const verifyUser = async () => {
+      
+    const token = localStorage.getItem("token");
 
-    return () => clearInterval(interval);
-  }, []);
+    if (!token) {
+
+      setToken(false);
+      setLoading(false);
+
+      return;
+    }
+
+    try {
+
+      // backend se verify
+      
+      await api.get("/me");
+     
+
+
+      setToken(true);
+
+    } catch (error) {
+
+      console.log("user no longer exists");
+
+      localStorage.clear();
+
+      setToken(false);
+
+      window.location.href = "/auth";
+    }
+    finally{
+      setLoading(false);
+    }
+  };
+
+  verifyUser();
+
+ 
+  const interval=setInterval(() => {
+    verifyUser();
+  }, 5000);
+
+  return ()=>clearInterval(interval);
+
+}, []);
+
+  if(loading){
+
+    return (
+
+       <div
+        className="
+          h-screen
+          flex
+          items-center
+          justify-center
+          bg-black
+          text-white
+        "
+      >
+        Loading...
+      </div>
+
+    )
+
+
+
+  }
 
   return (
     <Routes>
       <Route
         path="/auth"
-        element={!token ? <Auth setToken={setToken} /> : <Navigate to="/dashboard" />}
+        element={token ? <Navigate to="/dashboard" /> : <Auth setToken={setToken} />}
       />
 
       <Route
         path="/dashboard"
-        element={token ? <Dashboard /> : <Navigate to="/auth" />}
+        element={<ProtectedRoute><Dashboard /></ProtectedRoute>}
       />
 
       <Route

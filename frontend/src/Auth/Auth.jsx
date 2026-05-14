@@ -32,26 +32,23 @@ const Auth = ({ setToken }) => {
           email: formData.email,
           password: formData.password,
         });
-        console.log(response.data);
         
         const token = response.data.data.token;
 
         localStorage.setItem("token", token);
-        setToken(token);
+       
 
 
-        console.log("TOKEN:", localStorage.getItem("token"));
+        localStorage.setItem("user",JSON.stringify(response.data.data.user))    
         
+         setToken(token);
         setTimeout(() => {
             navigate("/dashboard");
         
         
           }, 100);
       
-          localStorage.setItem(
-              "user",
-              JSON.stringify(response.data.data.user)
-          );
+          
       
         } 
         
@@ -65,16 +62,21 @@ const Auth = ({ setToken }) => {
           password: formData.password,
         });
 
-        const token = response.data.token;
-        console.log(response.data);
+        const token = response.data.data.token;
+        
+        console.log(token);
+        console.log(response.data.data);
+        
+        
         
 
         localStorage.setItem("token", token);
+        
+        localStorage.setItem("user",JSON.stringify(response.data.data.user))
         setToken(token);
+        
+        navigate("/dashboard");
 
-        setTimeout(() => {
-            navigate("/dashboard");
-        }, 100);
       }
     } catch (error) {
       console.log(error.response?.data || error.message);
@@ -92,7 +94,7 @@ const Auth = ({ setToken }) => {
 
       <div style={styles.card}>
         <h1 style={styles.logo}>
-          Talk<span style={{ color: "#d4af37" }}>ify</span>
+          Convo<span style={{ color: "#d4af37" }}>fy</span>
         </h1>
 
         <p style={styles.subtitle}>

@@ -103,6 +103,16 @@ const acceptRequest=async(req,res)=>{
             await request.save();
 
 
+            // now socket io will handle the connection between the users when the request is accepted
+            const io = req.app.get("io");
+
+            const senderId = request.sender;
+            const receiverId = request.receiver;
+
+            io.to(senderId.toString()).emit("connectionAccepted");
+
+            io.to(receiverId.toString()).emit("connectionAccepted");
+
             return res.status(200).json({
                 message:"Request accepted successfully",
                 data:request,

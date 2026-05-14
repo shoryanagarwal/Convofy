@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import ChatHeader from "./ChatHeader";
 import MessageBubble from "./MessageBubble";
 import MessageInput from "./MessageInput";
+
+import socket from "../../Socket/socket";
 
 const ChatWindow = ({
   selectedUser,
@@ -13,6 +15,72 @@ const ChatWindow = ({
 }) => {
 
   const [input, setInput] = useState("");
+
+
+ useEffect(() => {
+
+  const handleMessage = (newMessage) => {
+
+    console.log(
+      "realtime Message",
+      newMessage
+    );
+
+    setMessages((prev) => {
+
+      const exists = prev.find(
+        (msg) => msg._id === newMessage._id
+      );
+
+      if (exists) {
+        return prev;
+      }
+
+      return [
+
+        ...prev,
+        newMessage
+
+      ];
+    });
+  };
+
+  socket.off("message received");
+
+  socket.on(
+    "message received",
+    handleMessage
+  );
+
+  return () => {
+
+    socket.off(
+      "message received",
+      handleMessage
+    );
+  };
+
+}, []);
+
+
+useEffect(() => {
+
+  if (!selectedChat?._id) return;
+
+  socket.emit(
+    "join chat",
+    selectedChat._id
+  );
+
+  console.log(
+    "joined room",
+    selectedChat._id
+  );
+
+}, [selectedChat]);
+
+
+
 
   return (
     <div className="flex-1 flex flex-col bg-[#0b0b0c]">

@@ -1,5 +1,6 @@
 import React from "react";
 import api from "../../Api/axios";
+import socket from "../../Socket/socket.js";
 
 const ChatList = ({
   connections,
@@ -24,9 +25,13 @@ const ChatList = ({
           userId: user._id
         }
       );
-      console.log(response.data.data);
+      
       
       setSelectedChat(response.data.data);
+
+
+     
+
 
       // OPEN CHAT WINDOW
       setActivePanel("chat");

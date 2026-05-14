@@ -29,8 +29,8 @@ const getConnection = async(req,res) => {
                 return connect.receiver;
 
             }
-            else{
-                return connect.sender; // if the reciever is the user then we need to return the sender details
+            else if(connect.receiver._id.toString()==userId){ // if the reciever is the user then we need to return the sender details
+                return connect.sender; 
             }
 
 

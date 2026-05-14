@@ -1,5 +1,5 @@
 const express=require('express');
-
+const protect = require('../../Middleware/protect.js')
 const router=express.Router();
 
 const authMiddleware=require('../../Middleware/AuthMiddleware.js');
@@ -41,7 +41,13 @@ router.post('/request/accept',authMiddleware,acceptRequest);
 router.post('/request/reject',authMiddleware,rejectRequest);
 
 
+router.get('/me',protect,(req,res)=>{
+    return res.status(200).json({
+    success: true,
+    data: req.user,
+  });
 
+})
 
 router.get('/connections/:userId',authMiddleware,getConnection)
 

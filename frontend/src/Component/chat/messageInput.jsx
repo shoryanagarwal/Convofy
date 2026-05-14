@@ -1,6 +1,6 @@
 import React from "react";
 import api from "../../Api/axios";
-
+import socket from "../../Socket/socket.js";
 const MessageInput = ({
   input,
   setInput,
@@ -15,20 +15,34 @@ const MessageInput = ({
 
     try {
 
-      const response = await api.post(
-        "/message",
-        {
-          chatId: selectedChat._id,
-          content: input
+      const newMessage = {
+        content: input,
+        chatId: selectedChat._id,
+        sender:{
+          _id: JSON.parse(localStorage.getItem("user"))._id,
+          username: JSON.parse(localStorage.getItem("user")).username
         }
-      );
+      }
 
       setMessages((prev) => [
         ...prev,
-        response.data.data
+        {
+          ...newMessage,
+          _id: Date.now()
+        }
+       
       ]);
 
-      setInput("");
+      
+
+          socket.emit(
+              "new message",
+              newMessage
+        );
+
+    // CLEAR INPUT
+        setInput("");
+ 
 
     } catch (error) {
 
@@ -39,14 +53,34 @@ const MessageInput = ({
   return (
     <div className="h-[80px] border-t border-[#1f1f1f] flex items-center px-4 gap-3">
 
-      <input
+       <input
         type="text"
         placeholder="Type a message..."
         value={input}
         onChange={(e) =>
           setInput(e.target.value)
         }
-        className="flex-1 h-[50px] bg-[#1a1a1a] rounded-lg px-4 outline-none"
+        onKeyDown={(e) => {
+
+          if (e.key === "Enter") {
+
+            sendMessage();
+
+          }
+        }}
+        className="
+          flex-1
+          h-[50px]
+          bg-[#1a1a1a]
+          rounded-2xl
+          px-5
+          outline-none
+          text-sm
+          border
+          border-[#222]
+          focus:border-yellow-500/30
+          transition
+        "
       />
 
       <button

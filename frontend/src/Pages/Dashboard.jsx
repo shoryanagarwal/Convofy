@@ -9,7 +9,18 @@ import ProfilePanel from "../Component/rightPanel/profilePanel.jsx";
 
 import RequestPanel from "../Component/request/request.jsx";
 import ChatList from "../Component/chat/chatList.jsx";
+
+
+import socket from "../Socket/socket.js";
+
+
+  
+
 const Dashboard = () => {
+ 
+
+
+
 
   const [users, setUsers] = useState([]);
   const[connections,setConnections]=useState([]);
@@ -26,9 +37,74 @@ const Dashboard = () => {
   const [activePanel, setActivePanel] =
     useState("search");
 
-  const currentUser = JSON.parse(
-    localStorage.getItem("user")
-  );
+const storage = localStorage.getItem("user");
+
+let currentUser = null;
+
+try {
+
+  if (storage && storage !== "undefined") {
+    currentUser = JSON.parse(storage);
+  }
+
+} catch (error) {
+
+  console.log("Invalid user in localStorage");
+
+  localStorage.clear();
+
+  window.location.href = "/auth";
+}
+  useEffect(()=>{
+
+      socket.connect(); // Connect the socket when the component mounts
+
+     if(currentUser){
+   socket.emit("setup", currentUser);
+}
+
+
+      socket.on("connected",()=>{
+          console.log("socket connected frontend");
+      })
+
+
+      return ()=>{
+        socket.disconnect();
+      }
+
+  },[])
+
+
+
+  useEffect(()=>{
+
+    socket.on("connectionAccepted",async()=>{
+        // when the connection is accepted then fetch the connections again to update the connection list in the frontend
+        try {
+          
+         const response = await api.get(`/connections/${currentUser._id}`);
+
+          setConnections(response.data.data)
+
+        } 
+        
+        catch (error) {
+          console.log("error while fetching connections after accepting request");  
+        }
+    
+      })
+
+
+      return ()=>{
+        socket.off("connectionAccepted");
+      }
+
+
+  },[currentUser])
+
+
+
 
   // FETCH USERS
   useEffect(() => {
@@ -57,37 +133,7 @@ const Dashboard = () => {
 
   }, []);
 
-  useEffect(()=>{
-      
-    const fetchConnections=async()=>{
 
-        try{
-
-          const response = await api.get(`/connections/${currentUser._id}`);
-
-          console.log(response.data.data);
-
-
-          setConnections(response.data.data)
-          
-
-        }
-
-        catch(error){
-          console.log(error);
-
-
-          
-        }
-
-          
-
-
-      }
-
-      fetchConnections();
-
-  },[])
 
 
   // LOAD MESSAGES
