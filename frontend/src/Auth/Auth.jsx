@@ -86,189 +86,212 @@ const Auth = ({ setToken }) => {
   };
 
   return (
-    <div style={styles.page}>
+   
+  <div style={styles.page}>
+    <div style={styles.bluePlanet}>
       
-      {/* Stars */}
-      <div style={styles.stars1}></div>
-      <div style={styles.stars2}></div>
-
-      <div style={styles.card}>
-        <h1 style={styles.logo}>
-          Convo<span style={{ color: "#d4af37" }}>fy</span>
-        </h1>
-
-        <p style={styles.subtitle}>
-          {isLogin
-            ? "Welcome back to your space"
-            : "Create your account"}
-        </p>
-
-        <form onSubmit={handleSubmit}>
-          {!isLogin && (
-            <input
-              type="text"
-              name="name"
-              placeholder="Full Name"
-              value={formData.name}
-              onChange={handleChange}
-              style={styles.input}
-            />
-          )}
-
-          <input
-            type="email"
-            name="email"
-            placeholder="Email Address"
-            value={formData.email}
-            onChange={handleChange}
-            style={styles.input}
-          />
-
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            value={formData.password}
-            onChange={handleChange}
-            style={styles.input}
-          />
-
-          <button type="submit" style={styles.button}>
-            {loading
-              ? "Please wait..."
-              : isLogin
-              ? "Login"
-              : "Create Account"}
-          </button>
-        </form>
-
-        <p style={styles.switchText}>
-          {isLogin
-            ? "Don't have an account?"
-            : "Already have an account?"}
-
-          <span
-            style={styles.switchBtn}
-            onClick={() => setIsLogin(!isLogin)}
-          >
-            {isLogin ? " Sign Up" : " Login"}
-          </span>
-        </p>
-      </div>
     </div>
-  );
+    <div style={styles.goldOrbit}></div>
+    <div style={styles.stars}></div>
+
+    <div style={styles.card}>
+
+
+      <h1 style={styles.logo}>
+        Convo<span style={{ color: "#d6ad4a" }}>fy</span>
+      </h1>
+
+      <p style={styles.subtitle}>
+        {isLogin ? "Welcome back to your space" : "Create your account"}
+      </p>
+
+      <form onSubmit={handleSubmit}>
+        {!isLogin && (
+          <input
+            type="text"
+            name="name"
+            placeholder="   Full Name"
+            value={formData.name}
+            onChange={handleChange}
+            style={styles.input}
+          />
+        )}
+
+        <input
+          type="email"
+          name="email"
+          placeholder="   Email Address"
+          value={formData.email}
+          onChange={handleChange}
+          style={styles.input}
+        />
+
+        <input
+          type="password"
+          name="password"
+          placeholder="   Password"
+          value={formData.password}
+          onChange={handleChange}
+          style={styles.input}
+        />
+
+        <button type="submit" style={styles.button}>
+          {loading ? "Please wait..." : isLogin ? "Login" : "Create Account"}
+        </button>
+      </form>
+
+      <div style={styles.orRow}>
+        <span style={styles.line}></span>
+        <span style={styles.or}>or</span>
+        <span style={styles.line}></span>
+      </div>
+
+      <p style={styles.switchText}>
+        {isLogin ? "Don't have an account?" : "Already have an account?"}
+        <span style={styles.switchBtn} onClick={() => setIsLogin(!isLogin)}>
+          {isLogin ? " Sign Up" : " Login"}
+        </span>
+      </p>
+    </div>
+  </div>
+);
 };
 
 const styles = {
   page: {
     minHeight: "100vh",
     width: "100%",
-    background:
-      "radial-gradient(circle at top, #111111 0%, #050505 70%)",
+    position: "relative",
+    overflow: "hidden",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    overflow: "hidden",
-    position: "relative",
-    fontFamily: "Arial, sans-serif",
+    fontFamily: "'Inter', 'Segoe UI', sans-serif",
+    background:
+      "radial-gradient(circle at 20% 35%, #142763 0%, transparent 34%), radial-gradient(circle at 78% 78%, rgba(113,75,18,0.28), transparent 28%), linear-gradient(135deg, #02040c 0%, #050816 45%, #02030a 100%)",
   },
 
-  stars1: {
+  bluePlanet: {
     position: "absolute",
-    width: "2px",
-    height: "2px",
-    background: "white",
-    boxShadow: `
-      50px 80px white,
-      200px 150px white,
-      400px 300px white,
-      700px 100px white,
-      900px 250px white,
-      1100px 500px white,
-      1300px 200px white,
-      1500px 400px white
-    `,
+    left: "-220px",
+    top: "90px",
+    width: "520px",
+    height: "520px",
+    borderRadius: "50%",
+    border: "1px solid rgba(110,145,255,0.45)",
+    boxShadow:
+      "0 0 90px rgba(63,102,220,0.45), inset -25px 0 80px rgba(80,120,255,0.22)",
+    background:
+      "radial-gradient(circle at 70% 40%, rgba(60,95,190,0.22), transparent 55%)",
   },
 
-  stars2: {
+  goldOrbit: {
     position: "absolute",
-    width: "1px",
-    height: "1px",
-    background: "#d4af37",
-    boxShadow: `
-      100px 200px #d4af37,
-      350px 100px #d4af37,
-      600px 250px #d4af37,
-      850px 350px #d4af37,
-      1200px 150px #d4af37,
-      1450px 500px #d4af37
-    `,
+    right: "-180px",
+    bottom: "-120px",
+    width: "520px",
+    height: "520px",
+    borderRadius: "50%",
+    border: "1px solid rgba(214,173,74,0.22)",
+    boxShadow: "0 0 80px rgba(214,173,74,0.14)",
+  },
+
+  stars: {
+    position: "absolute",
+    inset: 0,
+    backgroundImage:
+      "radial-gradient(#d6ad4a 1px, transparent 1px), radial-gradient(rgba(255,255,255,0.5) 1px, transparent 1px)",
+    backgroundSize: "130px 120px, 190px 170px",
+    opacity: 0.45,
   },
 
   card: {
-    width: "100%",
-    maxWidth: "340px",
-    padding: "32px",
-    borderRadius: "20px",
-    background: "rgba(255,255,255,0.04)",
-    backdropFilter: "blur(12px)",
-    border: "1px solid rgba(255,255,255,0.08)",
-    boxShadow: "0 0 30px rgba(0,0,0,0.5)",
+    position: "relative",
     zIndex: 2,
+    width: "80%",
+    maxWidth: "420px",
+    padding: "12px 40px",
+    borderRadius: "28px",
+    background: "rgba(8, 12, 27, 0.74)",
+    backdropFilter: "blur(22px)",
+    border: "1px solid rgba(180,198,255,0.24)",
+    boxShadow:
+      "0 35px 100px rgba(0,0,0,0.72), inset 0 1px 0 rgba(255,255,255,0.08)",
   },
 
   logo: {
     textAlign: "center",
-    color: "white",
-    fontSize: "32px",
-    marginBottom: "8px",
-    letterSpacing: "1px",
+    color: "#fff",
+    fontSize: "56px",
+    lineHeight: "1",
+    marginBottom: "18px",
+    fontWeight: "400",
+    letterSpacing: "0.5px",
   },
 
   subtitle: {
     textAlign: "center",
-    color: "#bdbdbd",
-    marginBottom: "28px",
-    fontSize: "14px",
+    color: "#c4cad8",
+    marginBottom: "40px",
+    fontSize: "18px",
   },
 
   input: {
     width: "100%",
-    padding: "13px",
-    marginBottom: "16px",
-    borderRadius: "12px",
-    border: "1px solid rgba(255,255,255,0.1)",
-    background: "rgba(255,255,255,0.05)",
-    color: "white",
+    height: "58px",
+    padding: "0 22px",
+    marginBottom: "22px",
+    borderRadius: "11px",
+    border: "1px solid rgba(180,198,255,0.13)",
+    background: "rgba(255,255,255,0.035)",
+    color: "#fff",
     outline: "none",
-    fontSize: "14px",
+    fontSize: "16px",
     boxSizing: "border-box",
   },
 
   button: {
     width: "100%",
-    padding: "13px",
-    borderRadius: "12px",
+    height: "62px",
+    borderRadius: "10px",
     border: "none",
-    background: "linear-gradient(135deg, #d4af37, #f5deb3)",
-    color: "#111",
-    fontWeight: "bold",
+    background: "linear-gradient(135deg, #f4d276, #c9962e)",
+    color: "#101010",
+    fontWeight: "600",
     cursor: "pointer",
+    fontSize: "17px",
+    marginTop: "16px",
+  },
+
+  orRow: {
+    display: "flex",
+    alignItems: "center",
+    gap: "22px",
+    margin: "34px 0 26px",
+  },
+
+  line: {
+    flex: 1,
+    height: "1px",
+    background: "rgba(255,255,255,0.18)",
+  },
+
+  or: {
+    color: "#aab0bf",
     fontSize: "15px",
-    marginTop: "6px",
   },
 
   switchText: {
     textAlign: "center",
-    color: "#bdbdbd",
-    marginTop: "20px",
-    fontSize: "14px",
+    color: "#c4cad8",
+    fontSize: "16px",
+    margin: 0,
   },
 
   switchBtn: {
-    color: "#f5deb3",
+    color: "#e5bd59",
     cursor: "pointer",
-    fontWeight: "bold",
+    fontWeight: "600",
   },
 };
 

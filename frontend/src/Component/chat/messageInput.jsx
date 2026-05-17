@@ -1,28 +1,20 @@
 import React from "react";
-import api from "../../Api/axios";
 import socket from "../../Socket/socket.js";
-const MessageInput = ({
-  input,
-  setInput,
-  selectedChat,
-  setMessages
-}) => {
 
+const MessageInput = ({ input, setInput, selectedChat, setMessages }) => {
   const sendMessage = async () => {
-
     if (!input.trim()) return;
     if (!selectedChat) return;
 
     try {
-
       const newMessage = {
         content: input,
         chatId: selectedChat._id,
-        sender:{
+        sender: {
           _id: JSON.parse(localStorage.getItem("user"))._id,
           username: JSON.parse(localStorage.getItem("user")).username
         }
-      }
+      };
 
       setMessages((prev) => [
         ...prev,
@@ -30,66 +22,34 @@ const MessageInput = ({
           ...newMessage,
           _id: Date.now()
         }
-       
       ]);
 
-      
-
-          socket.emit(
-              "new message",
-              newMessage
-        );
-
-    // CLEAR INPUT
-        setInput("");
- 
-
+      socket.emit("new message", newMessage);
+      setInput("");
     } catch (error) {
-
       console.log(error);
     }
   };
 
   return (
-    <div className="h-[80px] border-t border-[#1f1f1f] flex items-center px-4 gap-3">
-
-       <input
+    <div className="h-[82px] border-t border-white/10 flex items-center px-5 gap-3 bg-[#070b18]/70 backdrop-blur-xl">
+      <input
         type="text"
         placeholder="Type a message..."
         value={input}
-        onChange={(e) =>
-          setInput(e.target.value)
-        }
+        onChange={(e) => setInput(e.target.value)}
         onKeyDown={(e) => {
-
-          if (e.key === "Enter") {
-
-            sendMessage();
-
-          }
+          if (e.key === "Enter") sendMessage();
         }}
-        className="
-          flex-1
-          h-[50px]
-          bg-[#1a1a1a]
-          rounded-2xl
-          px-5
-          outline-none
-          text-sm
-          border
-          border-[#222]
-          focus:border-yellow-500/30
-          transition
-        "
+        className="flex-1 h-[50px] bg-white/[0.04] rounded-2xl px-5 outline-none text-sm text-white placeholder:text-gray-500 border border-white/10 focus:border-[#d6ad4a]/40 transition"
       />
 
       <button
         onClick={sendMessage}
-        className="h-[50px] px-6 bg-yellow-500 text-black rounded-lg font-medium hover:opacity-90"
+        className="h-[50px] px-7 bg-[#d6ad4a] text-black rounded-xl font-medium hover:opacity-90 transition"
       >
         Send
       </button>
-
     </div>
   );
 };

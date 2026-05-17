@@ -1,37 +1,34 @@
 import React from "react";
 
 const ChatHeader = ({ selectedUser }) => {
-
   return (
-    <div className="h-[70px] border-b border-[#1f1f1f] flex items-center justify-between px-6">
-
+    <div className="h-[72px] border-b border-white/10 flex items-center justify-between px-6 bg-[#070b18]/70 backdrop-blur-xl">
       <div className="flex items-center gap-3">
-
-        <div className="w-11 h-11 rounded-full bg-gray-700"></div>
+        <div className="w-11 h-11 rounded-full bg-gradient-to-br from-[#1c2b58] to-[#0b1020] border border-white/10 flex items-center justify-center text-sm font-semibold">
+          {selectedUser ? selectedUser.username?.charAt(0).toUpperCase() : "?"}
+        </div>
 
         <div>
-
-          <h2 className="font-semibold">
-            {selectedUser
-              ? selectedUser.username
-              : "Select a User"}
+          <h2 className="font-medium text-white">
+            {selectedUser ? selectedUser.username : "Select a User"}
           </h2>
 
-          <p className="text-sm text-gray-400">
-            Start chatting
-          </p>
-
+          <p className="text-xs text-gray-500">Start chatting</p>
         </div>
       </div>
 
-      <div className="flex gap-4 text-xl">
+      <div className="flex gap-3 text-lg text-gray-400">
+        <button className="w-9 h-9 rounded-xl hover:bg-white/[0.06] transition">
+          📞
+        </button>
 
-        <button>📞</button>
+        <button className="w-9 h-9 rounded-xl hover:bg-white/[0.06] transition">
+          🎥
+        </button>
 
-        <button>🎥</button>
-
-        <button>⋮</button>
-
+        <button className="w-9 h-9 rounded-xl hover:bg-white/[0.06] transition">
+          ⋮
+        </button>
       </div>
     </div>
   );

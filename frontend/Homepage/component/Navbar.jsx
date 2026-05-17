@@ -1,6 +1,5 @@
-const { useEffect } = require("react");
 import {Link} from 'react-router-dom'
-
+import { useEffect, useState } from 'react';
 const Navbar =() =>{
 
     const [scrolled, setScrolled] = useState(false); // State to track if the user has scrolled

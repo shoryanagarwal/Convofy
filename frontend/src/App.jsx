@@ -5,6 +5,12 @@ import Dashboard from "./Pages/Dashboard.jsx";
 import api from "./Api/axios.js";
 import { isTokenValid } from "./utils/auth.js";
 import ProtectedRoute from "./ProtectedRoutes.jsx";
+
+
+import Home from "../Homepage/pages/home.jsx";
+
+
+
 function App() {
    const [loading, setLoading] =useState(true);
   const [token, setToken] =useState(false);
@@ -83,23 +89,32 @@ function App() {
   }
 
   return (
-    <Routes>
-      <Route
-        path="/auth"
-        element={token ? <Navigate to="/dashboard" /> : <Auth setToken={setToken} />}
-      />
+  <Routes>
+    <Route path="/" element={<Home />} />
 
-      <Route
-        path="/dashboard"
-        element={<ProtectedRoute><Dashboard /></ProtectedRoute>}
-      />
+    <Route
+      path="/auth"
+      element={
+        token ? (
+          <Navigate to="/dashboard" />
+        ) : (
+          <Auth setToken={setToken} />
+        )
+      }
+    />
 
-      <Route
-        path="*"
-        element={<Navigate to={token ? "/dashboard" : "/auth"} />}
-      />
-    </Routes>
-  );
+    <Route
+      path="/dashboard"
+      element={
+        <ProtectedRoute>
+          <Dashboard />
+        </ProtectedRoute>
+      }
+    />
+
+    <Route path="*" element={<Navigate to="/" />} />
+  </Routes>
+);
 }
 
 export default App;

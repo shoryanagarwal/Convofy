@@ -1,8 +1,5 @@
-import React from "react";
-import api from "../../Api/axios";
-
-
-
+import React, { useState } from "react";
+import api from "../../Api/axios.js";
 
 const UserCard = ({
   user,
@@ -11,108 +8,88 @@ const UserCard = ({
   setSelectedChat,
   setMessages
 }) => {
+  const currentUser = JSON.parse(localStorage.getItem("user"));
 
-    const currentUser = JSON.parse(localStorage.getItem("user"));
+  const [requestSent, setRequestSent] = useState(false);
+  const [sending, setSending] = useState(false);
 
   const openChat = async () => {
-
     try {
-
       setMessages([]);
-
       setSelectedUser(user);
 
-      const response = await api.post(
-        "/chat/oneonone",
-        {
-          userId: user._id
-        }
-      );
+      const response = await api.post("/chat/oneonone", {
+        userId: user._id
+      });
 
       setSelectedChat(response.data.data);
-
     } catch (error) {
-
       console.log(error);
     }
   };
 
-  const sendRequest = async(e) => {
+  const sendRequest = async (e) => {
+    e.stopPropagation();
 
-      e.stopPropagation();
+    if (requestSent || sending) return;
 
-      try {
-        
-        const response=await api.post("request/send",{
-          sender: currentUser._id,
-          receiver: user._id
+    try {
+      setSending(true);
+      setRequestSent(true);
 
-        })
+      const response = await api.post("request/send", {
+        sender: currentUser._id,
+        receiver: user._id
+      });
 
-        console.log(response.data.data);
+      console.log(response.data.data);
+    } catch (error) {
+      console.log(error);
 
-        
-          
-
-      } 
-      
-      catch (error) {
-        console.log(error);
-
-      }
-
+      // agar request fail hui to button wapas pehle jaisa
+      setRequestSent(false);
+    } finally {
+      setSending(false);
+    }
   };
 
   return (
     <div
-      
-      className={`p-3 rounded-xl mb-2 cursor-pointer transition border ${
+      onClick={openChat}
+      className={`p-3 rounded-2xl mb-2 cursor-pointer transition border ${
         selectedUser?._id === user._id
-          ? "bg-[#1a1a1a] border-[#2a2a2a]"
-          : "hover:bg-[#181818] border-transparent"
+          ? "bg-white/[0.07] border-[#d6ad4a]/30"
+          : "bg-white/[0.025] border-white/5 hover:bg-white/[0.06]"
       }`}
     >
-
-      <div className="flex items-center justify-between">
-
-        {/* LEFT */}
-        <div className="flex items-center gap-3">
-
-          <div className="w-12 h-12 rounded-full bg-gray-700 flex items-center justify-center text-lg font-bold">
+      <div className="flex items-center justify-between gap-3">
+        <div className="flex items-center gap-3 min-w-0">
+          <div className="w-11 h-11 rounded-full bg-gradient-to-br from-[#1c2b58] to-[#0b1020] border border-white/10 flex items-center justify-center text-sm font-semibold text-white">
             {user.username?.charAt(0).toUpperCase()}
           </div>
 
-          <div>
-
-            <h3 className="font-medium">
+          <div className="min-w-0">
+            <h3 className="font-medium text-sm text-white truncate">
               {user.username}
             </h3>
 
             <p className="text-xs text-gray-500">
-              Tap to open profile
+              {requestSent ? "Request sent" : "Tap to open chat"}
             </p>
-
           </div>
         </div>
 
-        {/* REQUEST BUTTON */}
         <button
           onClick={sendRequest}
-          className="
-            w-10 h-10
-            rounded-full
-            bg-yellow-500/10
-            border border-yellow-500/20
-            text-yellow-400
-            flex items-center justify-center
-            hover:bg-yellow-500
-            hover:text-black
-            transition
-          "
+          disabled={requestSent || sending}
+          className={`w-9 h-9 rounded-full border flex items-center justify-center transition ${
+            requestSent
+              ? "bg-white/[0.04] border-white/10 text-gray-500 cursor-not-allowed"
+              : "bg-[#d6ad4a]/10 border-[#d6ad4a]/25 text-[#d6ad4a] hover:bg-[#d6ad4a] hover:text-black"
+          }`}
         >
-          +
+          {requestSent ? "✓" : "+"}
         </button>
-
       </div>
     </div>
   );
