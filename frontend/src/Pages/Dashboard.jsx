@@ -178,7 +178,7 @@ try {
     <div className="absolute inset-0 opacity-30 bg-[radial-gradient(rgba(255,255,255,0.6)_1px,transparent_1px)] [background-size:120px_120px]" />
 
     {/* main dashboard */}
-    <div className="relative z-10 flex h-screen w-full overflow-hidden">
+    <div className="relative z-10 flex h-screen w-full overflow-hidden md:flex-row flex-col">
       {/* SIDEBAR */}
       <div className="border-r border-white/10 bg-black/20 backdrop-blur-xl">
         <LeftSidebar setActivePanel={setActivePanel} />

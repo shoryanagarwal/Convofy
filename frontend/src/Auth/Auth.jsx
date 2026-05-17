@@ -47,6 +47,8 @@ const Auth = ({ setToken }) => {
         const user = response.data.data.user;
 
         saveAuthAndRedirect(token, user);
+        setToken(true);
+        window.location.replace("/dashboard");
       } else {
         const response = await API.post("/signup", {
           username: formData.name.trim(),

@@ -40,8 +40,7 @@ function App() {
       setToken(true);
 
     } catch (error) {
-  alert("ME API failed: " + (error.response?.data?.message || error.message));
-
+  
   console.log("user no longer exists");
   console.log(error.response?.data || error.message);
 
@@ -59,9 +58,6 @@ function App() {
   verifyUser();
 
  
-  const interval=setInterval(() => {
-    verifyUser();
-  }, 5000);
 
   return ()=>clearInterval(interval);
 
