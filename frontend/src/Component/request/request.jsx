@@ -60,7 +60,7 @@ const RequestPanel = () => {
           {requests.map((request) => (
             <div
               key={request._id}
-              className="bg-white/[0.035] border border-white/10 rounded-3xl p-5 flex items-center justify-between hover:bg-white/[0.06] transition"
+            className="bg-white/[0.035] border border-white/10 rounded-2xl p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 hover:bg-white/6 transition"
             >
               <div className="flex items-center gap-4">
                 <div className="w-14 h-14 rounded-full bg-gradient-to-br from-[#1c2b58] to-[#0b1020] border border-white/10 flex items-center justify-center text-lg font-semibold">
@@ -78,17 +78,17 @@ const RequestPanel = () => {
                 </div>
               </div>
 
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-3 w-full sm:w-auto">
                 <button
                   onClick={() => acceptRequest(request._id)}
-                  className="px-5 py-2.5 rounded-xl bg-[#d6ad4a] text-black font-medium hover:opacity-90 transition"
+                  className="flex-1 sm:flex-none px-4 py-2.5  rounded-xl bg-[#d6ad4a] text-black font-medium hover:opacity-90 transition"
                 >
                   Accept
                 </button>
 
                 <button
                   onClick={() => rejectRequest(request._id)}
-                  className="px-5 py-2.5 rounded-xl bg-red-500/10 text-red-400 border border-red-500/20 hover:bg-red-500/20 transition"
+                  className="flex-1 sm:flex-none px-4 py-2.5 rounded-xl bg-red-500/10 text-red-400 border border-red-500/20 hover:bg-red-500/20 transition"
                 >
                   Reject
                 </button>

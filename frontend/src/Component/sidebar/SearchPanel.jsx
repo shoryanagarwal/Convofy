@@ -15,8 +15,8 @@ const SearchPanel = ({
   );
 
   return (
-    <div className="w-[340px] bg-[#070b18]/70 border-r border-white/10 flex flex-col backdrop-blur-xl">
-      <div className="h-[72px] border-b border-white/10 flex items-center px-5">
+    <div className="w-full md:w-85 h-full bg-[#070b18]/70 border-r border-white/10 flex flex-col backdrop-blur-xl">
+      <div className="h-18 border-b border-white/10 flex items-center px-5">
         <div>
           <h1 className="text-xl font-medium text-white">Search</h1>
           <p className="text-xs text-gray-500 mt-1">Find people to connect</p>

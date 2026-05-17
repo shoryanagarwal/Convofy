@@ -59,12 +59,12 @@ const UserCard = ({
       className={`p-3 rounded-2xl mb-2 cursor-pointer transition border ${
         selectedUser?._id === user._id
           ? "bg-white/[0.07] border-[#d6ad4a]/30"
-          : "bg-white/[0.025] border-white/5 hover:bg-white/[0.06]"
+          : "bg-white/2.5 border-white/5 hover:bg-white/6"
       }`}
     >
       <div className="flex items-center justify-between gap-3">
         <div className="flex items-center gap-3 min-w-0">
-          <div className="w-11 h-11 rounded-full bg-gradient-to-br from-[#1c2b58] to-[#0b1020] border border-white/10 flex items-center justify-center text-sm font-semibold text-white">
+          <div className="w-11 h-11 rounded-full bg-linear-to-br from-[#1c2b58] to-[#0b1020] border border-white/10 flex items-center justify-center text-sm font-semibold text-white">
             {user.username?.charAt(0).toUpperCase()}
           </div>
 
@@ -82,9 +82,9 @@ const UserCard = ({
         <button
           onClick={sendRequest}
           disabled={requestSent || sending}
-          className={`w-9 h-9 rounded-full border flex items-center justify-center transition ${
+          className={`shrink-0 w-9 h-9 rounded-full border flex items-center justify-center transition ${
             requestSent
-              ? "bg-white/[0.04] border-white/10 text-gray-500 cursor-not-allowed"
+              ? "bg-white/4 border-white/10 text-gray-500 cursor-not-allowed"
               : "bg-[#d6ad4a]/10 border-[#d6ad4a]/25 text-[#d6ad4a] hover:bg-[#d6ad4a] hover:text-black"
           }`}
         >

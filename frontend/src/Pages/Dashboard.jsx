@@ -177,15 +177,14 @@ try {
 
     <div className="absolute inset-0 opacity-30 bg-[radial-gradient(rgba(255,255,255,0.6)_1px,transparent_1px)] [background-size:120px_120px]" />
 
-    {/* main dashboard */}
-    <div className="relative z-10 flex h-screen w-full overflow-hidden md:flex-row flex-col">
+    <div className="relative z-10 flex h-screen w-full overflow-hidden">
       {/* SIDEBAR */}
       <div className="border-r border-white/10 bg-black/20 backdrop-blur-xl">
         <LeftSidebar setActivePanel={setActivePanel} />
       </div>
 
-      {/* LEFT / MIDDLE PANEL */}
-      <div className="h-full border-r border-white/10 bg-[#070b18]/70 backdrop-blur-xl">
+    
+      <div className={`${activePanel==="chat" ? "hidden md:block" : "block" } h-full w-[calc(100vw-64px)] md-w-[340px] border-r border-white/10 bg-[#070b18]/60 backdrop-blur-xl`}>
         {activePanel === "search" && (
           <SearchPanel
             users={users}
@@ -197,9 +196,9 @@ try {
           />
         )}
 
-        {activePanel === "requests" && <RequestPanel />}
+        {activePanel==="requests" && <RequestPanel />}
 
-        {activePanel === "chats" && (
+        {activePanel==="chats" && (
           <ChatList
             connections={connections}
             selectedUser={selectedUser}
@@ -211,9 +210,8 @@ try {
         )}
       </div>
 
-      {/* CHAT MODE */}
-      <div className="flex flex-1 overflow-hidden bg-black/10">
-        {activePanel === "chat" ? (
+      <div className={` ${activePanel==="chat" ? "flex" : "hidden md:flex"} flex flex-1 overflow-hidden bg-black/10`}>
+        {activePanel==="chat" ? (
           <>
             <div className="flex-1">
               <ChatWindow
@@ -222,6 +220,7 @@ try {
                 messages={messages}
                 setMessages={setMessages}
                 currentUser={currentUser}
+                setActivePanel={setActivePanel}
               />
             </div>
 
