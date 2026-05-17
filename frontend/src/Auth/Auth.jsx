@@ -21,6 +21,8 @@ const Auth = ({ setToken }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+      alert("button clicked");
+
     setLoading(true);
 
     try {
