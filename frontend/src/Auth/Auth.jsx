@@ -51,12 +51,15 @@ const Auth = ({ setToken }) => {
     } else {
       alert("calling signup api");
 
+      const fullSignupUrl = `${import.meta.env.VITE_API_URL}/signup`;
+
+      alert("CALLING SIGNUP URL: " + fullSignupUrl);
+
       const response = await API.post("/signup", {
         username: formData.name.trim(),
         email: formData.email.trim(),
         password: formData.password,
       });
-
       alert("signup api success");
 
       const token = response.data.data.token;
