@@ -71,15 +71,19 @@ const Auth = ({ setToken }) => {
       window.location.replace("/dashboard");
     }
   } catch (error) {
-    const message =
-      error.response?.data?.message ||
-      error.response?.data?.err?.message ||
-      error.message ||
-      "Something went wrong";
+  alert(
+    "AUTH ERROR\n" +
+      "FULL URL: " +
+      error.config?.baseURL +
+      error.config?.url +
+      "\nSTATUS: " +
+      error.response?.status +
+      "\nMESSAGE: " +
+      (error.response?.data?.message || error.message)
+  );
+}
 
-    alert("AUTH ERROR: " + message);
-    console.log("AUTH ERROR:", error.response?.data || error.message);
-  } finally {
+finally {
     setLoading(false);
   }
 };
