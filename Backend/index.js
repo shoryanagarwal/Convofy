@@ -21,10 +21,16 @@ const StartServer = async () => {
     try {
 
         
+       const allowedOrigins = [
+        "http://localhost:5173",
+        "https://convofy-one.vercel.app"
+        ];
+
+
         app.use(cors({
-        origin: "http://localhost:5173",
-        credentials: true,
-        }));
+            origin: allowedOrigins,
+            credentials: true,
+            }));
 
        
         app.use(express.json());
@@ -52,14 +58,12 @@ const StartServer = async () => {
 
         
         const io = new Server(server, {
-           
             pingTimeout: 60000,
-                cors: {
-                    origin: "http://localhost:5173",
-                    credentials: true,
-                }
-        });
-
+            cors: {
+                origin: allowedOrigins,
+                credentials: true,
+            }
+            });
         app.set("io", io);
 
        
