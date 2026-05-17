@@ -1,10 +1,7 @@
-
 import React, { useState } from "react";
-import API from "../Api/axios";
-import { useNavigate } from "react-router-dom";
+import API from "../Api/axios.js";
 
 const Auth = ({ setToken }) => {
-  const navigate = useNavigate();
   const [isLogin, setIsLogin] = useState(true);
 
   const [formData, setFormData] = useState({
@@ -29,132 +26,118 @@ const Auth = ({ setToken }) => {
     try {
       if (isLogin) {
         const response = await API.post("/login", {
-          email: formData.email,
+          email: formData.email.trim(),
           password: formData.password,
         });
-        
+
         const token = response.data.data.token;
+        const user = response.data.data.user;
 
         localStorage.setItem("token", token);
-       
+        localStorage.setItem("user", JSON.stringify(user));
 
+        setToken(true);
 
-        localStorage.setItem("user",JSON.stringify(response.data.data.user))    
-        
-         setToken(token);
-        setTimeout(() => {
-            navigate("/dashboard");
-        
-        
-          }, 100);
-      
-          
-      
-        } 
-        
-        //signup
-        else {
-        console.log(formData);
-        
+        window.location.replace("/dashboard");
+      } else {
         const response = await API.post("/signup", {
-          username: formData.name,
-          email: formData.email,
+          username: formData.name.trim(),
+          email: formData.email.trim(),
           password: formData.password,
         });
 
         const token = response.data.data.token;
-        
-        console.log(token);
-        console.log(response.data.data);
-        
-        
-        
+        const user = response.data.data.user;
 
         localStorage.setItem("token", token);
-        
-        localStorage.setItem("user",JSON.stringify(response.data.data.user))
-        setToken(token);
-        
-        navigate("/dashboard");
+        localStorage.setItem("user", JSON.stringify(user));
 
+        setToken(true);
+
+        window.location.replace("/dashboard");
       }
     } catch (error) {
-      console.log(error.response?.data || error.message);
+      const message =
+        error.response?.data?.message ||
+        error.response?.data?.err ||
+        error.message ||
+        "Something went wrong";
+
+      alert(message);
+      console.log("AUTH ERROR:", error.response?.data || error.message);
     } finally {
       setLoading(false);
     }
   };
 
   return (
-   
-  <div style={styles.page}>
-    <div style={styles.bluePlanet}>
-      
-    </div>
-    <div style={styles.goldOrbit}></div>
-    <div style={styles.stars}></div>
+    <div style={styles.page}>
+      <div style={styles.bluePlanet}></div>
+      <div style={styles.goldOrbit}></div>
+      <div style={styles.stars}></div>
 
-    <div style={styles.card}>
+      <div style={styles.card}>
+        <h1 style={styles.logo}>
+          Convo<span style={{ color: "#d6ad4a" }}>fy</span>
+        </h1>
 
+        <p style={styles.subtitle}>
+          {isLogin ? "Welcome back to your space" : "Create your account"}
+        </p>
 
-      <h1 style={styles.logo}>
-        Convo<span style={{ color: "#d6ad4a" }}>fy</span>
-      </h1>
+        <form onSubmit={handleSubmit}>
+          {!isLogin && (
+            <input
+              type="text"
+              name="name"
+              placeholder="Full Name"
+              value={formData.name}
+              onChange={handleChange}
+              style={styles.input}
+              required
+            />
+          )}
 
-      <p style={styles.subtitle}>
-        {isLogin ? "Welcome back to your space" : "Create your account"}
-      </p>
-
-      <form onSubmit={handleSubmit}>
-        {!isLogin && (
           <input
-            type="text"
-            name="name"
-            placeholder="   Full Name"
-            value={formData.name}
+            type="email"
+            name="email"
+            placeholder="Email Address"
+            value={formData.email}
             onChange={handleChange}
             style={styles.input}
+            required
           />
-        )}
 
-        <input
-          type="email"
-          name="email"
-          placeholder="   Email Address"
-          value={formData.email}
-          onChange={handleChange}
-          style={styles.input}
-        />
+          <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            value={formData.password}
+            onChange={handleChange}
+            style={styles.input}
+            required
+          />
 
-        <input
-          type="password"
-          name="password"
-          placeholder="   Password"
-          value={formData.password}
-          onChange={handleChange}
-          style={styles.input}
-        />
+          <button type="submit" style={styles.button} disabled={loading}>
+            {loading ? "Please wait..." : isLogin ? "Login" : "Create Account"}
+          </button>
+        </form>
 
-        <button type="submit" style={styles.button}>
-          {loading ? "Please wait..." : isLogin ? "Login" : "Create Account"}
-        </button>
-      </form>
+        <div style={styles.orRow}>
+          <span style={styles.line}></span>
+          <span style={styles.or}>or</span>
+          <span style={styles.line}></span>
+        </div>
 
-      <div style={styles.orRow}>
-        <span style={styles.line}></span>
-        <span style={styles.or}>or</span>
-        <span style={styles.line}></span>
+        <p style={styles.switchText}>
+          {isLogin ? "Don't have an account?" : "Already have an account?"}
+          <span style={styles.switchBtn} onClick={() => setIsLogin(!isLogin)}>
+            {isLogin ? " Sign Up" : " Login"}
+          </span>
+        </p>
       </div>
-
-      <p style={styles.switchText}>
-        {isLogin ? "Don't have an account?" : "Already have an account?"}
-        <span style={styles.switchBtn} onClick={() => setIsLogin(!isLogin)}>
-          {isLogin ? " Sign Up" : " Login"}
-        </span>
-      </p>
     </div>
-  </div>
-);
+  );
 };
 
 const styles = {
@@ -210,7 +193,7 @@ const styles = {
     zIndex: 2,
     width: "80%",
     maxWidth: "420px",
-    padding: "12px 40px",
+    padding: "28px 40px",
     borderRadius: "28px",
     background: "rgba(8, 12, 27, 0.74)",
     backdropFilter: "blur(22px)",
