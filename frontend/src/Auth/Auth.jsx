@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import API from "../Api/axios.js";
+
+const BACKEND_URL = "https://convofy-backend.onrender.com/api/v1";
 
 const Auth = ({ setToken }) => {
   const [isLogin, setIsLogin] = useState(true);
@@ -19,77 +20,63 @@ const Auth = ({ setToken }) => {
     });
   };
 
-  const handleSubmit = async (e) => {
-  e.preventDefault();
-
-  alert("button clicked");
-  alert("API URL = " + import.meta.env.VITE_API_URL);
-
-  setLoading(true);
-
-  try {
-    if (isLogin) {
-      alert("calling login api");
-
-      const response = await API.post("/login", {
-        email: formData.email.trim(),
-        password: formData.password,
-      });
-
-      alert("login api success");
-
-      const token = response.data.data.token;
-      const user = response.data.data.user;
-
-      localStorage.setItem("token", token);
-      localStorage.setItem("user", JSON.stringify(user));
-
-      alert("login data saved");
-
-      setToken(true);
-      window.location.replace("/dashboard");
-    } else {
-      alert("calling signup api");
-
-      const fullSignupUrl = `${import.meta.env.VITE_API_URL}/signup`;
-
-      alert("CALLING SIGNUP URL: " + fullSignupUrl);
-
-      const response = await API.post("/signup", {
-        username: formData.name.trim(),
-        email: formData.email.trim(),
-        password: formData.password,
-      });
-      alert("signup api success");
-
-      const token = response.data.data.token;
-      const user = response.data.data.user;
-
-      localStorage.setItem("token", token);
-      localStorage.setItem("user", JSON.stringify(user));
-
-      alert("signup data saved");
-
-      setToken(true);
-      window.location.replace("/dashboard");
+  const saveAuthAndRedirect = (token, user) => {
+    if (!token || !user) {
+      alert("Token or user missing from backend response");
+      return;
     }
-  } catch (error) {
-  alert(
-    "AUTH ERROR\n" +
-      "FULL URL: " +
-      error.config?.baseURL +
-      error.config?.url +
-      "\nSTATUS: " +
-      error.response?.status +
-      "\nMESSAGE: " +
-      (error.response?.data?.message || error.message)
-  );
-}
 
-finally {
-    setLoading(false);
-  }
-};
+    localStorage.setItem("token", token);
+    localStorage.setItem("user", JSON.stringify(user));
+
+    setToken(true);
+    window.location.replace("/dashboard");
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+
+    try {
+      const endpoint = isLogin ? "/login" : "/signup";
+
+      const payload = isLogin
+        ? {
+            email: formData.email.trim(),
+            password: formData.password,
+          }
+        : {
+            username: formData.name.trim(),
+            email: formData.email.trim(),
+            password: formData.password,
+          };
+
+      const response = await fetch(`${BACKEND_URL}${endpoint}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        alert(data.message || "Authentication failed");
+        return;
+      }
+
+      const token = data.data.token;
+      const user = data.data.user;
+
+      saveAuthAndRedirect(token, user);
+    } catch (error) {
+      alert(error.message || "Something went wrong");
+      console.log("AUTH ERROR:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div style={styles.page}>
@@ -98,10 +85,6 @@ finally {
       <div style={styles.stars}></div>
 
       <div style={styles.card}>
-        <p style={styles.debugText}>
-          MOBILE DEBUG VERSION 3
-        </p>
-
         <h1 style={styles.logo}>
           Convo<span style={{ color: "#d6ad4a" }}>fy</span>
         </h1>
@@ -156,10 +139,7 @@ finally {
 
         <p style={styles.switchText}>
           {isLogin ? "Don't have an account?" : "Already have an account?"}
-          <span
-            style={styles.switchBtn}
-            onClick={() => setIsLogin(!isLogin)}
-          >
+          <span style={styles.switchBtn} onClick={() => setIsLogin(!isLogin)}>
             {isLogin ? " Sign Up" : " Login"}
           </span>
         </p>
@@ -228,14 +208,6 @@ const styles = {
     border: "1px solid rgba(180,198,255,0.24)",
     boxShadow:
       "0 35px 100px rgba(0,0,0,0.72), inset 0 1px 0 rgba(255,255,255,0.08)",
-  },
-
-  debugText: {
-    color: "red",
-    textAlign: "center",
-    fontWeight: "bold",
-    marginBottom: "10px",
-    fontSize: "14px",
   },
 
   logo: {
