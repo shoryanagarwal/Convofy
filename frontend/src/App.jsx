@@ -40,15 +40,17 @@ function App() {
       setToken(true);
 
     } catch (error) {
+  alert("ME API failed: " + (error.response?.data?.message || error.message));
 
-      console.log("user no longer exists");
+  console.log("user no longer exists");
+  console.log(error.response?.data || error.message);
 
-      localStorage.clear();
+  localStorage.clear();
 
-      setToken(false);
+  setToken(false);
 
-      window.location.href = "/auth";
-    }
+  window.location.href = "/auth";
+}
     finally{
       setLoading(false);
     }

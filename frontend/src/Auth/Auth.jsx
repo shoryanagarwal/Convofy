@@ -39,23 +39,37 @@ const Auth = ({ setToken }) => {
         setToken(true);
 
         window.location.replace("/dashboard");
-      } else {
-        const response = await API.post("/signup", {
-          username: formData.name.trim(),
-          email: formData.email.trim(),
-          password: formData.password,
-        });
-
-        const token = response.data.data.token;
-        const user = response.data.data.user;
-
-        localStorage.setItem("token", token);
-        localStorage.setItem("user", JSON.stringify(user));
-
-        setToken(true);
-
-        window.location.replace("/dashboard");
       }
+      
+      
+      
+      else {
+  const response = await API.post("/signup", {
+    username: formData.name.trim(),
+    email: formData.email.trim(),
+    password: formData.password,
+  });
+
+  console.log("SIGNUP RESPONSE:", response.data);
+
+  const token = response.data.data.token;
+
+  const user =
+    response.data.data.user ||
+    response.data.data.newUser;
+
+  if (!token || !user) {
+    alert("Signup response is missing token or user");
+    return;
+  }
+
+  localStorage.setItem("token", token);
+  localStorage.setItem("user", JSON.stringify(user));
+
+  setToken(true);
+
+  window.location.replace("/dashboard");
+}
     } catch (error) {
       const message =
         error.response?.data?.message ||
