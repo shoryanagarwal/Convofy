@@ -21,7 +21,8 @@ const Auth = ({ setToken }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-      alert("button clicked");
+
+    alert("button clicked");
 
     setLoading(true);
 
@@ -32,54 +33,59 @@ const Auth = ({ setToken }) => {
           password: formData.password,
         });
 
+        alert("login api success");
+
         const token = response.data.data.token;
         const user = response.data.data.user;
 
+        if (!token || !user) {
+          alert("Login response is missing token or user");
+          return;
+        }
+
         localStorage.setItem("token", token);
         localStorage.setItem("user", JSON.stringify(user));
+
+        alert("login data saved");
+
+        setToken(true);
+
+        window.location.replace("/dashboard");
+      } else {
+        const response = await API.post("/signup", {
+          username: formData.name.trim(),
+          email: formData.email.trim(),
+          password: formData.password,
+        });
+
+        alert("signup api success");
+
+        const token = response.data.data.token;
+        const user = response.data.data.user;
+
+        if (!token || !user) {
+          alert("Signup response is missing token or user");
+          return;
+        }
+
+        localStorage.setItem("token", token);
+        localStorage.setItem("user", JSON.stringify(user));
+
+        alert("signup data saved");
 
         setToken(true);
 
         window.location.replace("/dashboard");
       }
-      
-      
-      
-      else {
-  const response = await API.post("/signup", {
-    username: formData.name.trim(),
-    email: formData.email.trim(),
-    password: formData.password,
-  });
-
-  console.log("SIGNUP RESPONSE:", response.data);
-
-  const token = response.data.data.token;
-
-  const user =
-    response.data.data.user ||
-    response.data.data.newUser;
-
-  if (!token || !user) {
-    alert("Signup response is missing token or user");
-    return;
-  }
-
-  localStorage.setItem("token", token);
-  localStorage.setItem("user", JSON.stringify(user));
-
-  setToken(true);
-
-  window.location.replace("/dashboard");
-}
     } catch (error) {
       const message =
         error.response?.data?.message ||
-        error.response?.data?.err ||
+        error.response?.data?.err?.message ||
         error.message ||
         "Something went wrong";
 
-      alert(message);
+      alert("AUTH ERROR: " + message);
+
       console.log("AUTH ERROR:", error.response?.data || error.message);
     } finally {
       setLoading(false);
@@ -93,6 +99,10 @@ const Auth = ({ setToken }) => {
       <div style={styles.stars}></div>
 
       <div style={styles.card}>
+        <p style={styles.debugText}>
+          MOBILE DEBUG VERSION 3
+        </p>
+
         <h1 style={styles.logo}>
           Convo<span style={{ color: "#d6ad4a" }}>fy</span>
         </h1>
@@ -147,7 +157,10 @@ const Auth = ({ setToken }) => {
 
         <p style={styles.switchText}>
           {isLogin ? "Don't have an account?" : "Already have an account?"}
-          <span style={styles.switchBtn} onClick={() => setIsLogin(!isLogin)}>
+          <span
+            style={styles.switchBtn}
+            onClick={() => setIsLogin(!isLogin)}
+          >
             {isLogin ? " Sign Up" : " Login"}
           </span>
         </p>
@@ -216,6 +229,14 @@ const styles = {
     border: "1px solid rgba(180,198,255,0.24)",
     boxShadow:
       "0 35px 100px rgba(0,0,0,0.72), inset 0 1px 0 rgba(255,255,255,0.08)",
+  },
+
+  debugText: {
+    color: "red",
+    textAlign: "center",
+    fontWeight: "bold",
+    marginBottom: "10px",
+    fontSize: "14px",
   },
 
   logo: {
