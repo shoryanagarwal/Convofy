@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-
-const BACKEND_URL = "https://convofy-backend.onrender.com/api/v1";
+import API from "../Api/axios.js";
 
 const Auth = ({ setToken }) => {
   const [isLogin, setIsLogin] = useState(true);
@@ -38,41 +37,37 @@ const Auth = ({ setToken }) => {
     setLoading(true);
 
     try {
-      const endpoint = isLogin ? "/login" : "/signup";
+      if (isLogin) {
+        const response = await API.post("/login", {
+          email: formData.email.trim(),
+          password: formData.password,
+        });
 
-      const payload = isLogin
-        ? {
-            email: formData.email.trim(),
-            password: formData.password,
-          }
-        : {
-            username: formData.name.trim(),
-            email: formData.email.trim(),
-            password: formData.password,
-          };
+        const token = response.data.data.token;
+        const user = response.data.data.user;
 
-      const response = await fetch(`${BACKEND_URL}${endpoint}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
-      });
+        saveAuthAndRedirect(token, user);
+      } else {
+        const response = await API.post("/signup", {
+          username: formData.name.trim(),
+          email: formData.email.trim(),
+          password: formData.password,
+        });
 
-      const data = await response.json();
+        const token = response.data.data.token;
+        const user = response.data.data.user;
 
-      if (!response.ok) {
-        alert(data.message || "Authentication failed");
-        return;
+        saveAuthAndRedirect(token, user);
       }
-
-      const token = data.data.token;
-      const user = data.data.user;
-
-      saveAuthAndRedirect(token, user);
     } catch (error) {
-      alert(error.message || "Something went wrong");
-      console.log("AUTH ERROR:", error);
+      const message =
+        error.response?.data?.message ||
+        error.response?.data?.err?.message ||
+        error.message ||
+        "Something went wrong";
+
+      alert(message);
+      console.log("AUTH ERROR:", error.response?.data || error.message);
     } finally {
       setLoading(false);
     }
