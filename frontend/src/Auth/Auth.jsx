@@ -20,77 +20,69 @@ const Auth = ({ setToken }) => {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    alert("button clicked");
+  alert("button clicked");
+  alert("API URL = " + import.meta.env.VITE_API_URL);
 
-    setLoading(true);
+  setLoading(true);
 
-    try {
-      if (isLogin) {
-        const response = await API.post("/login", {
-          email: formData.email.trim(),
-          password: formData.password,
-        });
+  try {
+    if (isLogin) {
+      alert("calling login api");
 
-        alert("login api success");
+      const response = await API.post("/login", {
+        email: formData.email.trim(),
+        password: formData.password,
+      });
 
-        const token = response.data.data.token;
-        const user = response.data.data.user;
+      alert("login api success");
 
-        if (!token || !user) {
-          alert("Login response is missing token or user");
-          return;
-        }
+      const token = response.data.data.token;
+      const user = response.data.data.user;
 
-        localStorage.setItem("token", token);
-        localStorage.setItem("user", JSON.stringify(user));
+      localStorage.setItem("token", token);
+      localStorage.setItem("user", JSON.stringify(user));
 
-        alert("login data saved");
+      alert("login data saved");
 
-        setToken(true);
+      setToken(true);
+      window.location.replace("/dashboard");
+    } else {
+      alert("calling signup api");
 
-        window.location.replace("/dashboard");
-      } else {
-        const response = await API.post("/signup", {
-          username: formData.name.trim(),
-          email: formData.email.trim(),
-          password: formData.password,
-        });
+      const response = await API.post("/signup", {
+        username: formData.name.trim(),
+        email: formData.email.trim(),
+        password: formData.password,
+      });
 
-        alert("signup api success");
+      alert("signup api success");
 
-        const token = response.data.data.token;
-        const user = response.data.data.user;
+      const token = response.data.data.token;
+      const user = response.data.data.user;
 
-        if (!token || !user) {
-          alert("Signup response is missing token or user");
-          return;
-        }
+      localStorage.setItem("token", token);
+      localStorage.setItem("user", JSON.stringify(user));
 
-        localStorage.setItem("token", token);
-        localStorage.setItem("user", JSON.stringify(user));
+      alert("signup data saved");
 
-        alert("signup data saved");
-
-        setToken(true);
-
-        window.location.replace("/dashboard");
-      }
-    } catch (error) {
-      const message =
-        error.response?.data?.message ||
-        error.response?.data?.err?.message ||
-        error.message ||
-        "Something went wrong";
-
-      alert("AUTH ERROR: " + message);
-
-      console.log("AUTH ERROR:", error.response?.data || error.message);
-    } finally {
-      setLoading(false);
+      setToken(true);
+      window.location.replace("/dashboard");
     }
-  };
+  } catch (error) {
+    const message =
+      error.response?.data?.message ||
+      error.response?.data?.err?.message ||
+      error.message ||
+      "Something went wrong";
+
+    alert("AUTH ERROR: " + message);
+    console.log("AUTH ERROR:", error.response?.data || error.message);
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <div style={styles.page}>
