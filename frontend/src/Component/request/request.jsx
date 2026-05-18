@@ -11,8 +11,9 @@ const RequestPanel = () => {
 
   const fetchRequests = async () => {
     try {
-      const response = await api.get(`request/${currentUser._id}`);
-      setRequests(response.data.data);
+      const response = await api.get(`/request/${currentUser._id}`);
+      console.log("REQUESTS RESPONSE:", response.data);
+      setRequests(response.data.data || []);
     } catch (error) {
       console.log(error);
     }
@@ -38,7 +39,7 @@ const RequestPanel = () => {
 
   return (
     <div className="flex-1 bg-[#070b18]/70 flex flex-col backdrop-blur-xl">
-      <div className="h-[72px] border-b border-white/10 flex items-center px-6">
+      <div className="h-18px border-b border-white/10 flex items-center px-6">
         <div>
           <h1 className="text-xl font-medium text-white">
             Connection Requests
