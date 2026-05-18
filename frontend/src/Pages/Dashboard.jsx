@@ -81,24 +81,21 @@ try {
 
     socket.on('user-online',(userId)=>{
 
-        setOnline((prevOnline)=>{
-            prevOnline.includes(userId)?prevOnline: [...prevOnline,userId]
-    })
+       setOnline((prevOnline) =>
+  prevOnline.includes(userId)
+    ? prevOnline
+    : [...prevOnline, userId]
+);
 
 
     })
 
 
-    socket.on('user-offline',(userId)=>[
-
-        setOnline((prevOnline)=>[
-
-            prevOnline.filter((id)=> id!== userId)
-
-        ])
-
-
-    ])
+    socket.on("user-offline", (userId) => {
+  setOnline((prevOnline) =>
+    prevOnline.filter((id) => id !== userId)
+  );
+});
 
 
     return ()=>{

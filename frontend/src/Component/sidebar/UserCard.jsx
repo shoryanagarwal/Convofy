@@ -7,7 +7,7 @@ const UserCard = ({
   setSelectedUser,
   setSelectedChat,
   setMessages,
-  online
+  online=[]
 
 }) => {
   const currentUser = JSON.parse(localStorage.getItem("user"));

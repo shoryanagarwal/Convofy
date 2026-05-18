@@ -8,7 +8,7 @@ const ChatList = ({
   setSelectedChat,
   setMessages,
   setActivePanel,
-  online
+  online=[]
 }) => {
   const openChat = async (user) => {
     try {

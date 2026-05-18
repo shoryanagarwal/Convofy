@@ -7,7 +7,7 @@ const SearchPanel = ({
   setSelectedUser,
   setSelectedChat,
   setMessages,
-  online
+  online=[]
 }) => {
   const [search, setSearch] = useState("");
 

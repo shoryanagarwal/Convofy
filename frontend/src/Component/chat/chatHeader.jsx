@@ -1,6 +1,6 @@
 import React from "react";
 
-const ChatHeader = ({ selectedUser ,setActivePanel , online }) => {
+const ChatHeader = ({ selectedUser ,setActivePanel , online=[] }) => {
 
   const isOnline= selectedUser && online?.includes(selectedUser._id);
   return (
