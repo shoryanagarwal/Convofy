@@ -261,6 +261,7 @@ try {
                 setMessages={setMessages}
                 currentUser={currentUser}
                 setActivePanel={setActivePanel}
+                online={online}
               />
             </div>
 
