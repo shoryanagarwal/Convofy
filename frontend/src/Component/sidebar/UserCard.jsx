@@ -73,7 +73,7 @@ const UserCard = ({
 
           <span
             className={`absolute bottom-0 right-0 w-3 h-3 rounded-full border-2 border-[#070b18] ${
-              onlineUsers?.includes(user._id)
+              online?.includes(user._id)
                 ? "bg-green-400"
                 : "bg-red-500"
             }`}
