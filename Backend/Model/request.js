@@ -26,7 +26,5 @@ const requestSchema = mongoose.Schema({
 
 
 
-const Request = mongoose.model('Reqeust',requestSchema);
-
-
+const Request = mongoose.model('Reqeust', requestSchema);
 module.exports=Request;

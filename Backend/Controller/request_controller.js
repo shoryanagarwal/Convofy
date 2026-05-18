@@ -49,11 +49,11 @@ const sendRequest=async(req,res)=>{
 
         // create new Request
 
-        const newRequest= await Request.create({
-            sender,
-            receiver
-        })
-
+        const newRequest = await Request.create({
+                sender,
+                receiver,
+                status: "pending"
+            });
 
         return res.status(200).json({
             message:"Request sent successfully",
@@ -177,17 +177,11 @@ const getRequest=async(req,res)=>{
     try {
             const {userId}=req.params;// params-> /request/:userId
 
-            const request = await Request.find({
-
-                status: 'pending',
-
+           const request = await Request.find({
                 receiver: userId
+            }).populate("sender", "username");
 
 
-
-
-
-            }).populate('sender','username')
 
         return res.status(200).json({
             data:request,
