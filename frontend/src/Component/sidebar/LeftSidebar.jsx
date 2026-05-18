@@ -32,16 +32,15 @@ const LeftSidebar = ({ setActivePanel }) => {
             <span className="hidden md:inline">Search</span>
           </button>
 
-          <button onClick={() => setActivePanel("chat")} className={navBtn}>
-              <span className="md:hidden">C</span>
-              <span className="hidden md:inline">Chat</span>
-            </button>
+          <button onClick={() => setActivePanel("chats")} className={navBtn}>
+  <span className="md:hidden">C</span>
+  <span className="hidden md:inline">Chats</span>
+</button>
 
-          <button onClick={() => setActivePanel("request")} className={navBtn}>
-    <span className="md:hidden">R</span>
-    <span className="hidden md:inline">Request</span>
-  </button>
-
+<button onClick={() => setActivePanel("requests")} className={navBtn}>
+  <span className="md:hidden">R</span>
+  <span className="hidden md:inline">Requests</span>
+</button>
           <button className={navBtn}>Groups</button>
           <button className={navBtn}>Calls</button>
           <button className={navBtn}>Settings</button>
