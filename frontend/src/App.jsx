@@ -16,51 +16,27 @@ function App() {
   const [token, setToken] =useState(false);
 
   useEffect(() => {
-
   const verifyUser = async () => {
-      
     const token = localStorage.getItem("token");
 
     if (!token) {
-
       setToken(false);
       setLoading(false);
-
       return;
     }
 
     try {
-
-      // backend se verify
-      
       await api.get("/me");
-     
-
-
       setToken(true);
-
     } catch (error) {
-  
-  console.log("user no longer exists");
-  console.log(error.response?.data || error.message);
-
-  localStorage.clear();
-
-  setToken(false);
-
-  window.location.href = "/auth";
-}
-    finally{
+      localStorage.clear();
+      setToken(false);
+    } finally {
       setLoading(false);
     }
   };
 
   verifyUser();
-
- 
-
-  return ()=>clearInterval(interval);
-
 }, []);
 
   if(loading){
