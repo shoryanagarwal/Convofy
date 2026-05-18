@@ -1,3 +1,5 @@
+import {Link} from "react-router-dom";
+
 
 const Hero = ()=>{
 
@@ -38,13 +40,13 @@ const Hero = ()=>{
 
 
                         <div className="flex gap-4 mt-8">
-                            <button className="bg-white text-black px-6 py-3 roundex-2xl font-medium hover:bg-zinc-200 transition">
+                            <Link to="/auth" className="bg-white text-black px-6 py-3 rounded-4xl font-medium hover:bg-zinc-200 transition">
                                 Get Started
 
 
-                            </button>
+                            </Link>
 
-                            <button className="border border-white/10 text-white px-6 py-3 rounded-2xl hover:bg-white/5 transition">
+                            <button to="/auth" className="border border-white/10 text-white px-6 py-3 rounded-2xl hover:bg-white/5 transition">
 
                             Explore Features
 
