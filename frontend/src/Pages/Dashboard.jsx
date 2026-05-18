@@ -114,27 +114,26 @@ try {
 
 
 
-  useEffect(() => {
+ useEffect(() => {
   const fetchConnections = async () => {
     if (!currentUser?._id) return;
 
     try {
       const response = await api.get(`/connections/${currentUser._id}`);
-
-      const fetchedConnections = response.data.data || [];
-      setConnections(fetchedConnections);
-
-      const connectionIds = fetchedConnections.map((user) => user._id);
-
-      setUsers((prevUsers) =>
-        prevUsers.filter((user) => !connectionIds.includes(user._id))
-      );
+      setConnections(response.data.data || []);
     } catch (error) {
-      console.log("error while fetching connections", error);
+      console.log(error);
     }
   };
 
   fetchConnections();
+
+  socket.on("connectionAccepted", fetchConnections);
+
+  return () => {
+    socket.off("connectionAccepted", fetchConnections);
+  };
+
 }, []);
 
 
@@ -221,7 +220,7 @@ try {
       </div>
 
     
-      <div className={`${activePanel==="chat" ? "hidden md:block" : "block" } h-full w-[calc(100vw-64px)] md-w-[340px] border-r border-white/10 bg-[#070b18]/60 backdrop-blur-xl`}>
+      <div className={`${activePanel==="chat" ? "hidden md:block" : "block" } h-full w-[calc(100vw-64px)] md:w-[340px] border-r border-white/10 bg-[#070b18]/60 backdrop-blur-xl`}>
         {activePanel === "search" && (
           <SearchPanel
             users={users}
@@ -234,8 +233,9 @@ try {
           />
         )}
 
-        {activePanel==="requests" && <RequestPanel />}
-
+      {activePanel==="requests" && (
+  <RequestPanel setActivePanel={setActivePanel} />
+)}
         {activePanel==="chats" && (
           <ChatList
             connections={connections}
@@ -245,6 +245,7 @@ try {
             setSelectedChat={setSelectedChat}
             setMessages={setMessages}
             setActivePanel={setActivePanel}
+            online={online}
           />
         )}
       </div>
