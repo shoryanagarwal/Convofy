@@ -4,7 +4,9 @@ const LeftSidebar = ({ setActivePanel }) => {
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
-    window.location.href = "/auth";
+    
+    // go to home page after logout
+    window.location.href = "/";
   };
 
  const navBtn =
@@ -20,6 +22,10 @@ const LeftSidebar = ({ setActivePanel }) => {
           </h1>
         </div>
 
+
+
+
+
         <div className="flex flex-col gap-2 p-4">
           <button onClick={() => setActivePanel("search")} className={navBtn}>
             <span className="md:hidden">S</span>
@@ -27,9 +33,9 @@ const LeftSidebar = ({ setActivePanel }) => {
           </button>
 
           <button onClick={() => setActivePanel("chat")} className={navBtn}>
-  <span className="md:hidden">C</span>
-  <span className="hidden md:inline">Chat</span>
-</button>
+              <span className="md:hidden">C</span>
+              <span className="hidden md:inline">Chat</span>
+            </button>
 
           <button onClick={() => setActivePanel("request")} className={navBtn}>
     <span className="md:hidden">R</span>

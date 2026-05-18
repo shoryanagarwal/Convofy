@@ -11,7 +11,7 @@ const ProtectedRoute = ({ children }) => {
     return <Navigate to="/auth" />;
   }
 
-  return children;
+  return children; // If token exists, render the children components (the protected page)
 };
 
 export default ProtectedRoute;
