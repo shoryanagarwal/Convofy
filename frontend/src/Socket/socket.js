@@ -1,8 +1,9 @@
 import { io } from "socket.io-client";
 
-const socket = io(import.meta.env.VITE_Socket_URL, {
-  autoConnect: false
+console.log("SOCKET URL NEW BUILD:", import.meta.env.VITE_SOCKET_URL);
+
+const socket = io(import.meta.env.VITE_SOCKET_URL, {
+  autoConnect: false,
 });
 
-
-export default socket
+export default socket;

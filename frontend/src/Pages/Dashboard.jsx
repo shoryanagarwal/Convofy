@@ -81,9 +81,9 @@ try {
 
     socket.on('user-online',(userId)=>{
 
-        setOnline((prevOnline)=>[
+        setOnline((prevOnline)=>{
             prevOnline.includes(userId)?prevOnline: [...prevOnline,userId]
-        ])
+    })
 
 
     })
