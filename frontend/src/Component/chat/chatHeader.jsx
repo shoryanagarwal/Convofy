@@ -1,8 +1,10 @@
 import React from "react";
 
-const ChatHeader = ({ selectedUser ,setActivePanel }) => {
+const ChatHeader = ({ selectedUser ,setActivePanel , online }) => {
+
+  const isOnline= selectedUser && online?.includes(selectedUser._id);
   return (
-    <div className="h-[72px] border-b border-white/10 flex items-center justify-between px-6 bg-[#070b18]/70 backdrop-blur-xl">
+    <div className="h-18px border-b border-white/10 flex items-center justify-between px-6 bg-[#070b18]/70 backdrop-blur-xl">
       <div className="flex items-center gap-3">
 
            <button
@@ -11,7 +13,7 @@ const ChatHeader = ({ selectedUser ,setActivePanel }) => {
             >
               ←
             </button>
-        <div className="w-11 h-11 rounded-full bg-gradient-to-br from-[#1c2b58] to-[#0b1020] border border-white/10 flex items-center justify-center text-sm font-semibold">
+        <div className="w-11 h-11 rounded-full bg-linear-to-br from-[#1c2b58] to-[#0b1020] border border-white/10 flex items-center justify-center text-sm font-semibold">
           {selectedUser ? selectedUser.username?.charAt(0).toUpperCase() : "?"}
         </div>
 
@@ -20,20 +22,30 @@ const ChatHeader = ({ selectedUser ,setActivePanel }) => {
             {selectedUser ? selectedUser.username : "Select a User"}
           </h2>
 
-          <p className="text-xs text-gray-500">Start chatting</p>
+          <div className="flex items-center gap-2 mt-1">
+          <span
+            className={`w-2 h-2 rounded-full ${
+              isOnline ? "bg-green-400" : "bg-red-500"
+            }`}
+          />
+
+          <p className={`text-xs ${isOnline ? "text-green-400" : "text-red-400"}`}>
+            {isOnline ? "Online" : "Offline"}
+          </p>
+</div>
         </div>
       </div>
 
       <div className="flex gap-3 text-lg text-gray-400">
-        <button className="w-9 h-9 rounded-xl hover:bg-white/[0.06] transition">
+        <button className="w-9 h-9 rounded-xl hover:bg-white/6 transition">
           📞
         </button>
 
-        <button className="w-9 h-9 rounded-xl hover:bg-white/[0.06] transition">
+        <button className="w-9 h-9 rounded-xl hover:bg-white/6 transition">
           🎥
         </button>
 
-        <button className="w-9 h-9 rounded-xl hover:bg-white/[0.06] transition">
+        <button className="w-9 h-9 rounded-xl hover:bg-white/6 transition">
           ⋮
         </button>
       </div>

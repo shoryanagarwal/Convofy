@@ -20,7 +20,7 @@ const Dashboard = () => {
  
 
 
-
+const [online ,setOnline]=useState([]);
 
   const [users, setUsers] = useState([]);
   const[connections,setConnections]=useState([]);
@@ -74,6 +74,46 @@ try {
       }
 
   },[])
+
+
+
+  useEffect(()=>{
+
+    socket.on('user-online',(userId)=>{
+
+        setOnline((prevOnline)=>[
+            prevOnline.includes(userId)?prevOnline: [...prevOnline,userId]
+        ])
+
+
+    })
+
+
+    socket.on('user-offline',(userId)=>[
+
+        setOnline((prevOnline)=>[
+
+            prevOnline.filter((id)=> id!== userId)
+
+        ])
+
+
+    ])
+
+
+    return ()=>{
+
+      socket.off('user-online');
+      socket.off('user-offline');
+
+    }
+
+
+
+
+  },[])
+
+
 
 
 
@@ -171,11 +211,11 @@ try {
     {/* background */}
     <div className="absolute inset-0 bg-[radial-gradient(circle_at_15%_25%,rgba(35,70,150,0.28),transparent_35%),radial-gradient(circle_at_85%_80%,rgba(190,135,35,0.14),transparent_30%),linear-gradient(135deg,#02040c,#050816,#02030a)]" />
 
-    <div className="absolute -left-48 top-20 h-[520px] w-[520px] rounded-full border border-blue-400/25 shadow-[0_0_90px_rgba(59,130,246,0.25)]" />
+    <div className="absolute -left-48 top-20 h-130px w-130px rounded-full border border-blue-400/25 shadow-[0_0_90px_rgba(59,130,246,0.25)]" />
 
-    <div className="absolute -right-56 bottom-[-160px] h-[560px] w-[560px] rounded-full border border-yellow-500/20 shadow-[0_0_90px_rgba(212,175,55,0.12)]" />
+    <div className="absolute -right-56 bottom-40px h-140px w-140px rounded-full border border-yellow-500/20 shadow-[0_0_90px_rgba(212,175,55,0.12)]" />
 
-    <div className="absolute inset-0 opacity-30 bg-[radial-gradient(rgba(255,255,255,0.6)_1px,transparent_1px)] [background-size:120px_120px]" />
+    <div className="absolute inset-0 opacity-30 bg-[radial-gradient(rgba(255,255,255,0.6)_1px,transparent_1px)] bg-size-[120px_120px]" />
 
     <div className="relative z-10 flex h-screen w-full overflow-hidden">
       {/* SIDEBAR */}
@@ -188,6 +228,7 @@ try {
         {activePanel === "search" && (
           <SearchPanel
             users={users}
+            online={online}
             selectedUser={selectedUser}
             setSelectedUser={setSelectedUser}
             setSelectedChat={setSelectedChat}
@@ -201,6 +242,7 @@ try {
         {activePanel==="chats" && (
           <ChatList
             connections={connections}
+            online={online}
             selectedUser={selectedUser}
             setSelectedUser={setSelectedUser}
             setSelectedChat={setSelectedChat}
@@ -230,7 +272,7 @@ try {
           </>
         ) : (
           <div className="flex flex-1 items-center justify-center px-6">
-            <div className="max-w-md rounded-3xl border border-white/10 bg-white/[0.04] p-10 text-center backdrop-blur-xl shadow-2xl">
+            <div className="max-w-md rounded-3xl border border-white/10 bg-white/4 p-10 text-center backdrop-blur-xl shadow-2xl">
               <h1 className="text-4xl font-light tracking-wide">
                 Convo<span className="text-[#d6ad4a]">fy</span>
               </h1>
@@ -239,7 +281,7 @@ try {
                 Select a chat or search users to start a conversation.
               </p>
 
-              <div className="mt-7 h-[1px] w-full bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+              <div className="mt-7 h-px w-full bg-linear-to-r from-transparent via-white/20 to-transparent" />
 
               <p className="mt-5 text-xs text-gray-500">
                 Premium private messaging space

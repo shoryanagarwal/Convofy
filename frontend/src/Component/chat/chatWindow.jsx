@@ -12,7 +12,8 @@ const ChatWindow = ({
   messages,
   setMessages,
   currentUser,
-  setActivePanel
+  setActivePanel,
+  online
 }) => {
   const [input, setInput] = useState("");
 
@@ -42,7 +43,7 @@ const ChatWindow = ({
  return (
   <div className="flex-1 flex flex-col h-full bg-[#040712]/60">
 
-    <ChatHeader selectedUser={selectedUser} setActivePanel={setActivePanel} />
+    <ChatHeader selectedUser={selectedUser} setActivePanel={setActivePanel} online={online} />
 
     <div className="flex-1 overflow-y-auto px-6 py-4 space-y-4">
       {messages.length === 0 ? (

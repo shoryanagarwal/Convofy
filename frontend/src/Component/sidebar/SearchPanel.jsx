@@ -6,7 +6,8 @@ const SearchPanel = ({
   selectedUser,
   setSelectedUser,
   setSelectedChat,
-  setMessages
+  setMessages,
+  online
 }) => {
   const [search, setSearch] = useState("");
 
@@ -47,6 +48,7 @@ const SearchPanel = ({
               setSelectedUser={setSelectedUser}
               setSelectedChat={setSelectedChat}
               setMessages={setMessages}
+              online={online}
             />
           ))
         )}

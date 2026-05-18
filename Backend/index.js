@@ -66,20 +66,43 @@ const StartServer = async () => {
             });
         app.set("io", io);
 
-       
+
+        // adding the offline and online functionality using socket.io
+            const userOnline= new Map();
+            const socketToUser = new Map();
+
+
         io.on('connection', (socket) => {
-            console.log("socket connected ", socket.id);
 
             socket.on('disconnect', () => {
                 console.log("user disconnected");
+
+                const userId= socketToUser.get(socket.id); // get the userId from socketToUser map using the socket.id
+
+                if(!userId) return;
+
+                socketToUser.delete(socket.id);
+                userOnline.delete(userId);
+
+                io.emit('user-offline',userId);
+
+
             });
 
             socket.on('setup', (userData) => {
 
 
                 if(!userData || !userData._id) return;
-                socket.join(userData._id);
+                const userId= userData._id.toString();
+
+                userOnline.set(userId,socket.id);// userOnline map will have the userId as key and socket.id as value
+                socketToUser.set(socket.id,userId);// socketToUser map will have the socket.id as key and userId as value
+
+
+                socket.join(userId);
                 socket.emit('connected');
+
+                io.emit('user-online',userId);
             });
 
             socket.on('join chat', (room) => {

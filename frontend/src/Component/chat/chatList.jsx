@@ -7,7 +7,8 @@ const ChatList = ({
   setSelectedUser,
   setSelectedChat,
   setMessages,
-  setActivePanel
+  setActivePanel,
+  online
 }) => {
   const openChat = async (user) => {
     try {
@@ -71,7 +72,13 @@ const ChatList = ({
                   <p className="text-xs text-gray-500 mt-1">Tap to chat</p>
                 </div>
 
-                <div className="w-2.5 h-2.5 rounded-full bg-green-400 shadow-[0_0_12px_rgba(74,222,128,0.8)]" />
+                <div
+                    className={`w-2.5 h-2.5 rounded-full ${
+                      online?.includes(user._id)
+                        ? "bg-green-400 shadow-[0_0_12px_rgba(74,222,128,0.8)]"
+                        : "bg-red-500 shadow-[0_0_12px_rgba(239,68,68,0.6)]"
+                    }`}
+                  />
               </div>
             </div>
           ))}

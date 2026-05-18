@@ -6,7 +6,9 @@ const UserCard = ({
   selectedUser,
   setSelectedUser,
   setSelectedChat,
-  setMessages
+  setMessages,
+  online
+
 }) => {
   const currentUser = JSON.parse(localStorage.getItem("user"));
 
@@ -64,9 +66,19 @@ const UserCard = ({
     >
       <div className="flex items-center justify-between gap-3">
         <div className="flex items-center gap-3 min-w-0">
+         <div className="relative shrink-0">
           <div className="w-11 h-11 rounded-full bg-linear-to-br from-[#1c2b58] to-[#0b1020] border border-white/10 flex items-center justify-center text-sm font-semibold text-white">
             {user.username?.charAt(0).toUpperCase()}
           </div>
+
+          <span
+            className={`absolute bottom-0 right-0 w-3 h-3 rounded-full border-2 border-[#070b18] ${
+              onlineUsers?.includes(user._id)
+                ? "bg-green-400"
+                : "bg-red-500"
+            }`}
+          />
+        </div>
 
           <div className="min-w-0">
             <h3 className="font-medium text-sm text-white truncate">
