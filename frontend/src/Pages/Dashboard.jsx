@@ -137,6 +137,17 @@ try {
 }, []);
 
 
+useEffect(() => {
+  socket.on("online-users", (users) => {
+    setOnline(users);
+  });
+
+  return () => {
+    socket.off("online-users");
+  };
+}, []);
+
+
 
 
   // FETCH USERS

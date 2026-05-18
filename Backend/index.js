@@ -89,21 +89,20 @@ const StartServer = async () => {
 
             });
 
-            socket.on('setup', (userData) => {
+            socket.on("setup", (userData) => {
+                if (!userData?._id) return;
 
+                const userId = userData._id.toString();
 
-                if(!userData || !userData._id) return;
-                const userId= userData._id.toString();
-
-                userOnline.set(userId,socket.id);// userOnline map will have the userId as key and socket.id as value
-                socketToUser.set(socket.id,userId);// socketToUser map will have the socket.id as key and userId as value
-
+                userOnline.set(userId, socket.id);
+                socketToUser.set(socket.id, userId);
 
                 socket.join(userId);
-                socket.emit('connected');
+                socket.emit("connected");
 
-                io.emit('user-online',userId);
-            });
+                socket.emit("online-users", Array.from(userOnline.keys()));
+                socket.broadcast.emit("user-online", userId);
+                });
 
             socket.on('join chat', (room) => {
                 socket.join(room);
