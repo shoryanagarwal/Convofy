@@ -59,6 +59,7 @@ const StartServer = async () => {
         
         const io = new Server(server, {
             pingTimeout: 60000,
+            transports: ["websocket"],
             cors: {
                 origin: allowedOrigins,
                 credentials: true,
