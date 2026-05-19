@@ -1,10 +1,31 @@
 import React from "react";
 import socket from "../../Socket/socket.js";
+import { useRef } from "react";
 
 const MessageInput = ({ input, setInput, selectedChat, setMessages }) => {
   const sendMessage = async () => {
     if (!input.trim()) return;
     if (!selectedChat) return;
+    const typingTimeoutRef = useRef(null);
+
+    const handleTyping=()=>{
+
+        setInput(e.target.value);
+
+        if(!selectedChat?._id) return;
+
+
+        socket.emit('typing',selectedChat._id)
+
+        if(typingTimeoutRef.current) clearTimeout(typingTimeoutRef.current); // Clear the previous timeout if it exists
+
+        typingTimeoutRef.current= setTimeout(()=>{
+            socket.emit('stop-typing',selectedChat._id)
+        },2000) // Emit 'stop-typing' after 2 seconds of inactivity
+
+
+    }
+
 
     try {
       const newMessage = {
@@ -25,6 +46,7 @@ const MessageInput = ({ input, setInput, selectedChat, setMessages }) => {
       ]);
 
       socket.emit("new message", newMessage);
+      socket.emit("stop typing", selectedChat._id);
       setInput("");
     } catch (error) {
       console.log(error);
@@ -37,7 +59,7 @@ const MessageInput = ({ input, setInput, selectedChat, setMessages }) => {
         type="text"
         placeholder="Type a message..."
         value={input}
-        onChange={(e) => setInput(e.target.value)}
+        onChange={handleTyping}
         onKeyDown={(e) => {
           if (e.key === "Enter") sendMessage();
         }}

@@ -90,6 +90,19 @@ const StartServer = async () => {
 
             });
 
+
+            //for typing indicator
+
+            socket.on('typing',(chatId)=>{
+
+                socket.to(chatId).emit('typing')
+
+
+            })
+
+            socket.on('stop-typing',(chatId)=>{
+                socket.to(chatId).emit('stop-typing')
+            })
             socket.on("setup", (userData) => {
                 if (!userData?._id) return;
 

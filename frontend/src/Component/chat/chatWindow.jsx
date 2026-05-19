@@ -18,10 +18,32 @@ const ChatWindow = ({
   const [input, setInput] = useState("");
   const messageRef= useRef(null);
 
+  const [typing,setTyping]=useState(false);
+
 
   useEffect(()=>{
 
-    messageRef.current?.scrollIntoView({behavior:"smooth"});
+      socket.on('typing',()=>{
+          setTyping(true);
+      })
+
+      socket.on('stop-typing',()=>{
+          setTyping(false);
+      })
+
+      return ()=>{
+          socket.off('typing');
+          socket.off('stop-typing');
+      }
+
+
+  },[])
+
+
+
+  useEffect(()=>{
+
+    messageRef.current?.scrollIntoView({behavior:"smooth"}); // Scroll to the bottom of the chat when messages change 
 
 
 
@@ -74,6 +96,12 @@ const ChatWindow = ({
 
       <div ref={messageRef} />
     </div>
+
+    {typing && (
+          <div className="text-xs text-gray-400 px-6 pb-2">
+        {selectedUser?.username} is typing...
+      </div>
+    )}
 
     {/* INPUT (ALWAYS BOTTOM) */}
     <div className="border-t border-white/10">
