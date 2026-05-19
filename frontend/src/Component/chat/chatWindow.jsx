@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 
 import ChatHeader from "./chatHeader.jsx";
 import MessageBubble from "./messageBubble.jsx";
@@ -16,6 +16,18 @@ const ChatWindow = ({
   online
 }) => {
   const [input, setInput] = useState("");
+  const messageRef= useRef(null);
+
+
+  useEffect(()=>{
+
+    messageRef.current?.scrollIntoView({behavior:"smooth"});
+
+
+
+  },[messages])
+
+
 
   useEffect(() => {
     const handleMessage = (newMessage) => {
@@ -59,6 +71,8 @@ const ChatWindow = ({
           />
         ))
       )}
+
+      <div ref={messageRef} />
     </div>
 
     {/* INPUT (ALWAYS BOTTOM) */}
