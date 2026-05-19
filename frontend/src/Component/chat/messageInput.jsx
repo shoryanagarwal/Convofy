@@ -3,12 +3,8 @@ import socket from "../../Socket/socket.js";
 import { useRef } from "react";
 
 const MessageInput = ({ input, setInput, selectedChat, setMessages }) => {
-  const sendMessage = async () => {
-    if (!input.trim()) return;
-    if (!selectedChat) return;
     const typingTimeoutRef = useRef(null);
-
-    const handleTyping=()=>{
+   const handleTyping=()=>{
 
         setInput(e.target.value);
 
@@ -25,7 +21,12 @@ const MessageInput = ({ input, setInput, selectedChat, setMessages }) => {
 
 
     }
-
+ 
+ 
+ 
+  const sendMessage = async () => {
+    if (!input.trim()) return;
+    if (!selectedChat) return;
 
     try {
       const newMessage = {
@@ -46,7 +47,6 @@ const MessageInput = ({ input, setInput, selectedChat, setMessages }) => {
       ]);
 
       socket.emit("new message", newMessage);
-      socket.emit("stop typing", selectedChat._id);
       setInput("");
     } catch (error) {
       console.log(error);
