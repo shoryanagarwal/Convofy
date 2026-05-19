@@ -4,7 +4,7 @@ import { useRef } from "react";
 
 const MessageInput = ({ input, setInput, selectedChat, setMessages }) => {
     const typingTimeoutRef = useRef(null);
-   const handleTyping=()=>{
+   const handleTyping=(e)=>{
 
         setInput(e.target.value);
 
