@@ -33,7 +33,7 @@ const UserCard = ({
         setMessages([]); // Clear previous messages
         setSelectedUser(user);// Set the selected user
 
-        const response =await api.post("/chat/    oneonone", {
+        const response =await api.post("/chat/oneonone", {
             userId: user._id
           });
 
