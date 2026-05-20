@@ -41,13 +41,7 @@ const ChatHeader = ({ selectedUser ,setActivePanel , online=[], activeUser , sel
       </div>
 
       <div className="flex gap-3 text-lg text-gray-400">
-        <button className="w-9 h-9 rounded-xl hover:bg-white/6 transition">
-          📞
-        </button>
-
-        <button className="w-9 h-9 rounded-xl hover:bg-white/6 transition">
-          🎥
-        </button>
+        
 
         <button className="w-9 h-9 rounded-xl hover:bg-white/6 transition">
           ⋮

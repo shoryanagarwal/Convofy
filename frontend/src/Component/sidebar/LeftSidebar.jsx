@@ -1,5 +1,5 @@
 import React from "react";
-
+import {Link} from 'react-router-dom';
 const LeftSidebar = ({ setActivePanel }) => {
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -16,11 +16,12 @@ const LeftSidebar = ({ setActivePanel }) => {
     return (
     <div className="w-16 md:w-55 h-full bg-[#060914]/75 border-r border-white/10 flex flex-col justify-between backdrop-blur-xl">
       <div>
-        <div className="h-18 flex items-center px-6 border-b border-white/10">
+        <Link to='/'  className="h-[72px] flex items-center px-6 border-b border-white/10">
+        
           <h1 className="hidden md:block text-2xl font-light tracking-wide text-white">
             Convo<span className="text-[#d6ad4a] font-normal">fy</span>
           </h1>
-        </div>
+        </Link>
 
 
 
@@ -41,9 +42,7 @@ const LeftSidebar = ({ setActivePanel }) => {
   <span className="md:hidden">R</span>
   <span className="hidden md:inline">Requests</span>
 </button>
-          <button className={navBtn}>Groups</button>
-          <button className={navBtn}>Calls</button>
-          <button className={navBtn}>Settings</button>
+          
         </div>
       </div>
 
