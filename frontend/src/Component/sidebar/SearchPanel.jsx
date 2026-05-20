@@ -8,7 +8,8 @@ const SearchPanel = ({
   setSelectedChat,
   setMessages,
   online=[],
-  connections=[]
+  connections=[],
+  setActivePanel
 }) => {
   const [search, setSearch] = useState("");
 
