@@ -77,12 +77,12 @@ const StartServer = async () => {
         io.on('connection', (socket) => {
 
 
-            socket.on('active-chat',({chatId,userId})=>{
+            socket.on('active-chat',({userId,chatId})=>{
 
                 if(!chatId || !userId) return;
 
 
-                activeUser.set(chatId.toString(),userId.toString());
+                activeUser.set(userId.toString(),chatId.toString());
 
 
                 io.emit('active-chat',Object.fromEntries(activeUser));

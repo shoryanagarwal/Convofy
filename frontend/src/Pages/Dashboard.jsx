@@ -86,7 +86,7 @@ try {
           socket.off('active-chat');
         }
      })
-  })
+  },[])
 
 
   useEffect(()=>{
