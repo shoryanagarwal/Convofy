@@ -7,12 +7,49 @@ const UserCard = ({
   setSelectedUser,
   setSelectedChat,
   setMessages,
-  online = []
+  online = [],
+  connections = [],
+  setActivePanel
 }) => {
+
+ 
+
   const currentUser = JSON.parse(localStorage.getItem("user"));
+
+   const isConnected = connections.some(
+    (connect)=> connect._id===user._id
+  )
 
   const [requestSent, setRequestSent] = useState(false);
   const [sending, setSending] = useState(false);
+
+  const openChat =async()=>{
+
+      if(!isConnected) return;
+
+
+      try {
+        
+        setMessages([]); // Clear previous messages
+        setSelectedUser(user);// Set the selected user
+
+        const response =await api.post("/chat/    oneonone", {
+            userId: user._id
+          });
+
+
+            setSelectedChat(response.data.data);
+            setActivePanel('chat');
+
+            } 
+      
+      catch (error) {
+        console.log(error);
+          
+      }
+
+  }
+
 
   const sendRequest = async (e) => {
     e.stopPropagation();
@@ -37,7 +74,8 @@ const UserCard = ({
   };
 
   return (
-    <div
+    <div 
+      onClick={openChat}
       className={`p-3 rounded-2xl mb-2 transition border ${
         selectedUser?._id === user._id
           ? "bg-white/[0.07] border-[#d6ad4a]/30"
@@ -64,11 +102,11 @@ const UserCard = ({
           <div>
             <h3 className="text-white text-sm">{user.username}</h3>
             <p className="text-xs text-gray-500">
-              {requestSent ? "Request sent" : "Send request"}
+              {isConnected ? "Tap To Chat" : requestSent ? "Request Sent" : "Not Connected Yet"}
             </p>
           </div>
         </div>
-
+        {!isConnected && ( 
         <button
           onClick={sendRequest}
           disabled={requestSent || sending}
@@ -76,6 +114,8 @@ const UserCard = ({
         >
           {requestSent ? "✓" : "+"}
         </button>
+
+        )}
       </div>
     </div>
   );

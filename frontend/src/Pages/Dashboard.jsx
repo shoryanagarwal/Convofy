@@ -254,6 +254,8 @@ useEffect(() => {
             setMessages={setMessages}
             setActivePanel={setActivePanel}
             activeUser={activeUser}
+            connections={connections}
+            setActivePanel={setActivePanel}
           />
         )}
 
