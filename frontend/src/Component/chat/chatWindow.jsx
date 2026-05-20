@@ -13,12 +13,30 @@ const ChatWindow = ({
   setMessages,
   currentUser,
   setActivePanel,
-  online
+  online,
+  activeUser
 }) => {
   const [input, setInput] = useState("");
   const messageRef= useRef(null);
 
   const [typing,setTyping]=useState(false);
+
+
+  useEffect(()=>{
+
+    const user= JSON.parse(localStorage.getItem("user"));
+
+    if(!selectedChat?._id || !user?._id) return;
+    
+    
+    socket.emit('active-chat',{chatId:selectedChat._id, userId:user._id});
+
+    return ()=>{
+      socket.emit('leave-chat',user._id)
+    }
+
+
+  },[selectedChat?._id])
 
 
   useEffect(()=>{
@@ -77,7 +95,7 @@ const ChatWindow = ({
  return (
   <div className="flex-1 flex flex-col h-full bg-[#040712]/60">
 
-    <ChatHeader selectedUser={selectedUser} setActivePanel={setActivePanel} online={online} />
+    <ChatHeader selectedUser={selectedUser} setActivePanel={setActivePanel} online={online} activeUser={activeUser} selectedChat={selectedChat}/>
 
     <div className="flex-1 overflow-y-auto px-6 py-4 space-y-4">
       {messages.length === 0 ? (

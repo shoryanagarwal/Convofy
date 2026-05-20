@@ -71,9 +71,33 @@ const StartServer = async () => {
         // adding the offline and online functionality using socket.io
             const userOnline= new Map();
             const socketToUser = new Map();
+            const activeUser= new Map(); // Map to track active users in each chat room
 
 
         io.on('connection', (socket) => {
+
+
+            socket.on('active-chat',({chatId,userId})=>{
+
+                if(!chatId || !userId) return;
+
+
+                activeUser.set(chatId.toString(),userId.toString());
+
+
+                io.emit('active-chat',Object.fromEntries(activeUser));
+
+            });
+
+
+            socket.on('leave-chat',(userId)=>{
+                if(!userId) return;
+
+                activeUser.delete(userId.toString());
+
+                io.emit('active-chat',Object.fromEntries(activeUser));
+            })
+
 
             socket.on('disconnect', () => {
                 console.log("user disconnected");
@@ -84,8 +108,10 @@ const StartServer = async () => {
 
                 socketToUser.delete(socket.id);
                 userOnline.delete(userId);
+                activeUser.delete(userId.toString());
 
                 io.emit('user-offline',userId);
+                io.emit('active-chat',Object.fromEntries(activeUser));
 
 
             });

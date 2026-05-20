@@ -37,6 +37,8 @@ const [online ,setOnline]=useState([]);
   const [activePanel, setActivePanel] =
     useState("search");
 
+  const [activeUser,setActiveUser]=useState({});  
+
 const storage = localStorage.getItem("user");
 
 let currentUser = null;
@@ -75,6 +77,16 @@ try {
 
   },[])
 
+
+  useEffect(()=>{
+     socket.on('active-chat',(data)=>{
+        setActiveUser(data || {});
+
+        return ()=>{
+          socket.off('active-chat');
+        }
+     })
+  })
 
 
   useEffect(()=>{
@@ -241,6 +253,7 @@ useEffect(() => {
             setSelectedChat={setSelectedChat}
             setMessages={setMessages}
             setActivePanel={setActivePanel}
+            activeUser={activeUser}
           />
         )}
 
@@ -257,6 +270,7 @@ useEffect(() => {
             setMessages={setMessages}
             setActivePanel={setActivePanel}
             online={online}
+            activeUser={activeUser}
           />
         )}
       </div>
@@ -273,6 +287,7 @@ useEffect(() => {
                 currentUser={currentUser}
                 setActivePanel={setActivePanel}
                 online={online}
+                activeUser={activeUser}
               />
             </div>
 
