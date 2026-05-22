@@ -86,7 +86,9 @@ const isMe = senderId?.toString() === currentUser?._id?.toString();
 
 
   return (
-    <div className={`group relative flex ${isMe ? "justify-end" : "justify-start"}`}>
+    <div 
+    onClick={(e) => e.stopPropagation()}
+    className={`group relative flex ${isMe ? "justify-end" : "justify-start"}`}>
       {isMe && (
         <button onClick={()=>{
           

@@ -133,7 +133,10 @@ const ChatWindow = ({
 
     <ChatHeader selectedUser={selectedUser} setActivePanel={setActivePanel} online={online} activeUser={activeUser} selectedChat={selectedChat} isSelectedUserInSameChat={isSelectedUserInSameChat}/>
 
-    <div className="flex-1 overflow-y-auto px-6 py-4 space-y-4">
+    <div 
+     onClick={() => setOpenMenu(null)}
+    className="flex-1 overflow-y-auto px-6 py-4 space-y-4">
+      
       {(messages || []).length === 0 ? (
         <div className="h-full flex items-center justify-center text-gray-500">
           No messages yet
