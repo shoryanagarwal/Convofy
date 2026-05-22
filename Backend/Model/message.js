@@ -51,7 +51,14 @@ const messageSchema=mongoose.Schema({
     isDeletedEveryone:{
         type:Boolean,
         default:false
-    }
+    },
+
+    seenBy:[
+        {
+            type:mongoose.Schema.Types.ObjectId,
+            ref:'User'
+        }
+    ]
 
 
 

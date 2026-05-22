@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import api from "../../Api/axios.js";
-const MessageBubble = ({ msg, currentUser,setMessages,isSelectedUserInSameChat }) => {
+const MessageBubble = ({ msg, currentUser,setMessages,isSelectedUserInSameChat,selectedUser }) => {
   const senderId = typeof msg.sender === "object" ? msg.sender._id : msg.sender;
   const isMe = senderId === currentUser._id;
 
   const [menuOpen, setMenuOpen] = useState(false)
   const [deleteOption,setDeleteOption] = useState(false)
+
+  const hasRecieverSeen = msg.seenBy?.some((id)=>id.tostring()===selectedUser?._id)
 
 
   const deleteForMe = async()=>{
@@ -136,7 +138,7 @@ const MessageBubble = ({ msg, currentUser,setMessages,isSelectedUserInSameChat }
 
                     </button>
                     
-                    {isMe  && !isSelectedUserInSameChat && (
+                    {isMe  && !hasRecieverSeen && (
                       <button 
                       onClick={deleteForEveryone}
                       className="w-full text-left px-4 py-2 text-sm text-gray-200 hover:bg-white/[0.06]">

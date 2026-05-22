@@ -77,12 +77,26 @@ const StartServer = async () => {
         io.on('connection', (socket) => {
 
 
-            socket.on('active-chat',({userId,chatId})=>{
+            socket.on('active-chat',async({userId,chatId})=>{
 
                 if(!chatId || !userId) return;
+                
+                await Message.updateMany(
+                    {
+                        chat:chatId,
+                        sender: { $ne: userId },
+                        seenBy: { $ne: userId }
+
+                    },
+                    {
+                        $addToSet:{seenBy:userId}
+                    }
 
 
-                activeUser.set(userId.toString(),chatId.toString());
+
+                )
+
+                activeUser.set(userId.toString(), chatId.toString() ); // Set the active chat for the user in the activeUser map
 
 
                 io.emit('active-chat',Object.fromEntries(activeUser));

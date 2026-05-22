@@ -145,6 +145,7 @@ const ChatWindow = ({
             currentUser={currentUser}
             setMessages={setMessages}
             isSelectedUserInSameChat={isSelectedUserInSameChat}
+            selectedUser={selectedUser}
           />
         ))
       )}
