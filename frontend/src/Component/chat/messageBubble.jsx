@@ -113,7 +113,7 @@ const MessageBubble = ({ msg, currentUser,setMessages,isSelectedUserInSameChat,s
 
       {menuOpen && (
         
-        <div onclick={(e)=>e.stopPropagation()} 
+        <div onClick={(e)=>e.stopPropagation()} 
         className={`absolute top-9 z-50 w-44 rounded-xl bg-[#0b1020] border border-white/10 shadow-xl overflow-hidden ${
             isMe ? "right-0" : "left-0"}`}>
 

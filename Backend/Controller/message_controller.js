@@ -15,12 +15,6 @@ const deleteForMe = async(req,res)=>{
             {$addToSet:{deletedFor:userId}},
             {new:true}
         )
-        return res.status(200).json({
-            success:true,
-            message:"Message deleted for you",
-            data:message
-        })
-
 
          if(!message){
             return res.status(404).json({
@@ -30,6 +24,16 @@ const deleteForMe = async(req,res)=>{
                 err:{}
             })
         }
+
+
+        return res.status(200).json({
+            success:true,
+            message:"Message deleted for you",
+            data:message
+        })
+
+
+        
         
     } 
     
@@ -71,7 +75,7 @@ const deleteForEveryone = async(req,res)=>{
         }
 
 
-         if(message.sender.toString() !== req.user.id){
+         if(message.sender.toString() !== req.user._id){
             return res.status(403).json({
                 success:false,
                 message:"You are not authorized to delete this message",
