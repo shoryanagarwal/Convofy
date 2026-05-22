@@ -38,15 +38,16 @@ const deleteForMe = async(req,res)=>{
     } 
     
     
-    catch (error) {
-        res.status(500).json({  
-            success:false,
-            err:error,
-            message:"Unable to delete message",
-            data:{}
-            });
+   catch (error) {
+  console.log("DELETE FOR EVERYONE ERROR:", error);
 
-    }
+  return res.status(500).json({
+    success: false,
+    message: "Unable to delete message for everyone",
+    data: {},
+    err: error.message
+  });
+}
 
 
 
