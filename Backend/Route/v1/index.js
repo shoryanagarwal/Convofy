@@ -7,7 +7,7 @@ const {getAllUsers} = require('../../Controller/usercontroller.js')
 const {registerUser,LoginUser} = require('../../Controller/auth_controller.js')
 
 const {oneOnOneChat,userChat}=require('../../Controller/chatcontroller.js')
-const {sendMessage,getMessage}=require('../../Controller/message_controller.js')
+const {sendMessage,getMessage,deleteForEveryone,deleteForMe}=require('../../Controller/message_controller.js')
 
 const {getConnection} = require('../../Controller/getconnection.js')
 
@@ -39,6 +39,13 @@ router.post('/request/send',authMiddleware,sendRequest);
 router.get('/request/:userId',authMiddleware,getRequest);
 router.post('/request/accept',authMiddleware,acceptRequest);
 router.post('/request/reject',authMiddleware,rejectRequest);
+
+
+
+//delete message routes
+router.post('/message/deleteforme',authMiddleware,deleteForMe);
+router.post('/message/deleteforeveryone',authMiddleware,deleteForEveryone);
+
 
 
 router.get('/me',protect,(req,res)=>{

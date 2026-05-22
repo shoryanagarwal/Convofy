@@ -29,17 +29,17 @@ const LeftSidebar = ({ setActivePanel }) => {
 
         <div className="flex flex-col gap-2 p-4">
           <button onClick={() => setActivePanel("search")} className={navBtn}>
-            <span className="md:hidden">S</span>
+            <span className="md:hidden">Search</span>
             <span className="hidden md:inline">Search</span>
           </button>
 
           <button onClick={() => setActivePanel("chats")} className={navBtn}>
-  <span className="md:hidden">C</span>
+  <span className="md:hidden">Chat</span>
   <span className="hidden md:inline">Chats</span>
 </button>
 
 <button onClick={() => setActivePanel("requests")} className={navBtn}>
-  <span className="md:hidden">R</span>
+  <span className="md:hidden">Request</span>
   <span className="hidden md:inline">Requests</span>
 </button>
           

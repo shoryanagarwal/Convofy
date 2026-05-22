@@ -86,6 +86,34 @@ const ChatWindow = ({
     };
   }, []);
 
+  useEffect(()=>{
+        socket.on("message-deleted",(updatedmsg)=>{
+
+          setMessages((prev)=>// Update the messages state by replacing the deleted message with the updated message
+               prev.map((message)=> //
+                  message._id === updatedmsg._id ?updatedmsg:message
+               )
+          )
+
+        })
+
+        return ()=>{
+          socket.off("message-deleted");
+        }
+
+  },[])
+
+
+
+
+
+
+
+
+  
+
+
+
   useEffect(() => {
     if (!selectedChat?._id) return;
 
@@ -108,6 +136,7 @@ const ChatWindow = ({
             key={msg._id}
             msg={msg}
             currentUser={currentUser}
+            setMessages={setMessages}
           />
         ))
       )}
@@ -121,7 +150,6 @@ const ChatWindow = ({
       </div>
     )}
 
-    {/* INPUT (ALWAYS BOTTOM) */}
     <div className="border-t border-white/10">
       <MessageInput
         input={input}

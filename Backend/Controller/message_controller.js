@@ -3,7 +3,91 @@ const Chat = require('../Model/chat.js');
 
 
 
+const deleteForMe = async(req,res)=>{
 
+    const {messageId,userId}= req.body;
+
+
+    try {
+
+        const message= await Message.findByIdAndUpdate(
+            messageId,
+            {$addToSet:{deletedFor:userId}},
+            {new:true}
+        )
+        return res.status(200).json({
+            success:true,
+            message:"Message deleted for you",
+            data:message
+        })
+        
+    } 
+    
+    
+    catch (error) {
+        res.status(500).json({  
+            success:false,
+            err:error,
+            message:"Unable to delete message",
+            data:{}
+            });
+
+    }
+
+
+
+}
+
+
+
+const deleteForEveryone = async(req,res)=>{
+
+    const {messageId,chatId} = req.body;
+
+    try {
+        const message = await Message.findByIdAndUpdate(
+            messageId,
+            {
+                content:"This message was deleted",
+                isDeletedEveryone:true,
+            },
+            {new:true}
+        )
+    
+        const io=req.app.get('io');
+        io.to(chatId).emit('message-deleted',message);
+    
+    
+        return res.status(200).json({
+            success:true,
+            message:"Message deleted for everyone",
+            data:message,
+            err:{}
+        })
+
+
+        if(message.Sender.toString() !== req.user.id){
+            return res.status(403).json({
+                success:false,
+                message:"You are not authorized to delete this message",
+                data:{},
+                err:{}
+            })
+        }
+        
+    } 
+    catch (error) {
+        res.status(500).json({
+            success:false,
+            message:"Unable to delete message for everyone",
+            data:{},
+            err:error
+        })
+        
+    }
+    
+
+}
 
 
 const sendMessage = async (req, res) => {
@@ -81,7 +165,8 @@ const getMessage = async (req, res) => {
 
         const messages = await Message.find({
 
-            chat: chatId
+            chat: chatId,
+            deletedFor: { $ne: req.user.id },
 
         })
         .populate("sender", "username ")
@@ -112,5 +197,7 @@ const getMessage = async (req, res) => {
 
 module.exports ={
     sendMessage,
-    getMessage
+    getMessage,
+    deleteForMe,
+    deleteForEveryone
 }

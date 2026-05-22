@@ -38,6 +38,19 @@ const messageSchema=mongoose.Schema({
         type:String,
         enum:['sent','delivered','read'],
         default:'sent'
+    },
+
+
+    deletedFor:[{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'User',
+
+    }],
+
+
+    isDeletedEveryone:{
+        type:Boolean,
+        default:false
     }
 
 
