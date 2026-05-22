@@ -7,7 +7,7 @@ const MessageBubble = ({ msg, currentUser,setMessages,isSelectedUserInSameChat,s
   const [menuOpen, setMenuOpen] = useState(false)
   const [deleteOption,setDeleteOption] = useState(false)
 
-  const hasRecieverSeen = msg.seenBy?.some((id)=>id.tostring()===selectedUser?._id)
+  const hasRecieverSeen = msg.seenBy?.some((id)=>id.toString()===selectedUser?._id)
 
 
   const deleteForMe = async()=>{
