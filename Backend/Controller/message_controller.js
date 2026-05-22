@@ -20,6 +20,16 @@ const deleteForMe = async(req,res)=>{
             message:"Message deleted for you",
             data:message
         })
+
+
+         if(!message){
+            return res.status(404).json({
+                success:false,
+                message:"Message not found",
+                data:{},
+                err:{}
+            })
+        }
         
     } 
     
@@ -42,21 +52,62 @@ const deleteForMe = async(req,res)=>{
 
 const deleteForEveryone = async(req,res)=>{
 
-    const {messageId,chatId} = req.body;
+    const {messageId,chatId,recieverId} = req.body;
 
     try {
-        const message = await Message.findByIdAndUpdate(
-            messageId,
-            {
-                content:"This message was deleted",
-                isDeletedEveryone:true,
-            },
-            {new:true}
-        )
-    
+
+
+
+
+        const message = await Message.findById(messageId);
+
+         if(!message){
+            return res.status(404).json({
+                success:false,
+                message:"Message not found",
+                data:{},
+                err:{}
+            })
+        }
+
+
+         if(message.sender.toString() !== req.user.id){
+            return res.status(403).json({
+                success:false,
+                message:"You are not authorized to delete this message",
+                data:{},
+                err:{}
+            })
+          }
+
+
+        const alreadySeen= message.seenBy?.some(id=>id.toString()===recieverId);
+        if(alreadySeen){
+            return res.status(400).json({
+                success:false,
+                message:"Message already seen",
+                data:{},
+                err:{}
+            })
+        }
+
+        message.content="This message has been deleted";
+        message.isDeletedEveryone(true);
+
+
+        await message.save();
+
+        
+
+
+
         const io=req.app.get('io');
         io.to(chatId).emit('message-deleted',message);
-    
+
+
+        
+        
+       
     
         return res.status(200).json({
             success:true,
@@ -66,14 +117,7 @@ const deleteForEveryone = async(req,res)=>{
         })
 
 
-        if(message.Sender.toString() !== req.user.id){
-            return res.status(403).json({
-                success:false,
-                message:"You are not authorized to delete this message",
-                data:{},
-                err:{}
-            })
-        }
+        
         
     } 
     catch (error) {

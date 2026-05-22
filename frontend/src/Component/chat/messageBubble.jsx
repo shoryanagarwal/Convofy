@@ -53,7 +53,8 @@ const MessageBubble = ({ msg, currentUser,setMessages,isSelectedUserInSameChat,s
 
         const response= await api.post('/message/deleteforeveryone',{
             messageId:msg._id,
-            chatId:typeof msg.chat === "object" ? msg.chat._id: msg.chat
+            chatId:typeof msg.chat === "object" ? msg.chat._id: msg.chat,
+            recieverId:selectedUser?._id
         
         }
         )
