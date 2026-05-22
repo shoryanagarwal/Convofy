@@ -19,16 +19,16 @@ const MessageBubble = ({ msg, currentUser,setMessages }) => {
 
 
 
-        setMessages((prev)=>{
-           prev.map((message)=>{
+        setMessages((prev)=>
+           prev.map((message)=>
                 message._id === msg._id ? {
                   ...message,
                   deletedFor:[...(message.deletedFor || []), currentUser._id]
                 }
                 :
                 message
-           })
-        })
+           )
+        )
 
         setMenuOpen(false);
         setDeleteOption(false);
