@@ -92,12 +92,12 @@ const deleteForEveryone = async(req,res)=>{
         }
 
         message.content="This message has been deleted";
-        message.isDeletedEveryone(true);
+        message.isDeletedEveryone=true;
 
 
         await message.save();
 
-        
+
 
 
 

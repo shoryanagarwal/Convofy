@@ -27,6 +27,7 @@ const ChatWindow = ({
   const messageRef= useRef(null);
 
   const [typing,setTyping]=useState(false);
+  const [openMenu, setOpenMenu]=useState(false);
 
 
   useEffect(()=>{
@@ -146,6 +147,8 @@ const ChatWindow = ({
             setMessages={setMessages}
             isSelectedUserInSameChat={isSelectedUserInSameChat}
             selectedUser={selectedUser}
+            setOpenMenu={setOpenMenu}
+            openMenu={openMenu}
           />
         ))
       )}

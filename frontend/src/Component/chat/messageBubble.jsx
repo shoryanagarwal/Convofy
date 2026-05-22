@@ -1,15 +1,14 @@
 import React, { useState } from "react";
 import api from "../../Api/axios.js";
-const MessageBubble = ({ msg, currentUser,setMessages,isSelectedUserInSameChat,selectedUser }) => {
+const MessageBubble = ({ msg, currentUser,setMessages,isSelectedUserInSameChat,selectedUser,setOpenMenu,openMenu }) => {
   const senderId = typeof msg.sender === "object" ? msg.sender._id : msg.sender;
   const isMe = senderId === currentUser._id;
 
-  const [menuOpen, setMenuOpen] = useState(false)
   const [deleteOption,setDeleteOption] = useState(false)
 
   const hasRecieverSeen = msg.seenBy?.some((id)=>id.toString()===selectedUser?._id)
-
-
+  
+  const menuOpen= openMenu === msg._id;
   const deleteForMe = async()=>{
 
       try {
@@ -31,8 +30,7 @@ const MessageBubble = ({ msg, currentUser,setMessages,isSelectedUserInSameChat,s
                 message
            )
         )
-
-        setMenuOpen(false);
+        setOpenMenu(null);
         setDeleteOption(false);
 
 
@@ -61,7 +59,7 @@ const MessageBubble = ({ msg, currentUser,setMessages,isSelectedUserInSameChat,s
 
 
         setDeleteOption(false);
-        setMenuOpen(false);
+        setOpenMenu(null);
       }
       catch(error){
         console.log(error);
@@ -77,7 +75,8 @@ const MessageBubble = ({ msg, currentUser,setMessages,isSelectedUserInSameChat,s
     <div className={`group relative flex ${isMe ? "justify-end" : "justify-start"}`}>
       {isMe && (
         <button onClick={()=>{
-            setMenuOpen(!menuOpen);
+          
+            setOpenMenu(menuOpen ?null : msg._id )
             setDeleteOption(false);
         }}  
         className="opacity-100 md:opacity-0 md:group-hover:opacity-100 transition text-gray-400 hover:text-white px-2">
@@ -105,14 +104,17 @@ const MessageBubble = ({ msg, currentUser,setMessages,isSelectedUserInSameChat,s
 
       {!isMe && (
           <button className ="opacity-100 md:opacity-0 md:group-hover:opacity-100 transition text-gray-400 hover:text-white px-2"
-          onClick={()=>{
-            setMenuOpen(!menuOpen);
+          onClick={(e)=>{
+            e.stopPropagation();
+           setOpenMenu(menuOpen ?null : msg._id )
             setDeleteOption(false);
           }}> ⋮</button>
       )} 
 
       {menuOpen && (
-        <div className={`absolute top-9 z-50 w-44 rounded-xl bg-[#0b1020] border border-white/10 shadow-xl overflow-hidden ${
+        
+        <div onclick={(e)=>e.stopPropagation()} 
+        className={`absolute top-9 z-50 w-44 rounded-xl bg-[#0b1020] border border-white/10 shadow-xl overflow-hidden ${
             isMe ? "right-0" : "left-0"}`}>
 
               {!deleteOption ? (
