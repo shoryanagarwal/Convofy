@@ -88,7 +88,7 @@ const MessageBubble = ({ msg, currentUser,setMessages }) => {
             : "bg-white/[0.055] text-gray-100 border-white/10"
         }`}
       >
-        {msg.isDeletedEveryone || msg.deletedFor ? (
+        {msg.isDeletedEveryone || msg.deletedFor?.includes(currentUser._id)  ? (
             <span className="italic text-gray-500">
               This message was deleted
             </span>
