@@ -76,14 +76,7 @@ const deleteForEveryone = async(req,res)=>{
         }
 
 
-         if(message.sender.toString() !== req.user._id){
-            return res.status(403).json({
-                success:false,
-                message:"You are not authorized to delete this message",
-                data:{},
-                err:{}
-            })
-          }
+         
 
 
         const alreadySeen= message.seenBy?.some(id=>id.toString()===recieverId);
