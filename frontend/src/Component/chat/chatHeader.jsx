@@ -1,10 +1,10 @@
 import React from "react";
 
-const ChatHeader = ({ selectedUser ,setActivePanel , online=[], activeUser , selectedChat }) => {
+const ChatHeader = ({ selectedUser ,setActivePanel , online=[], activeUser , selectedChat,isSelectedUserInSameChat }) => {
 
   const isOnline= selectedUser && online?.includes(selectedUser._id);
 
-  const isInSameChat = selectedUser && selectedChat?._id && activeUser?.[selectedUser._id]=== selectedChat._id
+  const isInSameChat = isSelectedUserInSameChat
 
 
   return (

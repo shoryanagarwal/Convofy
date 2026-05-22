@@ -16,6 +16,13 @@ const ChatWindow = ({
   online,
   activeUser
 }) => {
+
+// Check if the selected user is in the same chat as the active user
+  const isSelectedUserInSameChat= selectedUser && selectedChat?._id && activeUser?.[selectedUser._id] === selectedChat._id //.[selectedUser._id] === selectedChat._id -> iska matlab hai ki activeUser object me selectedUser ka id key ke roop me hai ya nahi aur uska value selectedChat ka id ke barabar hai ya nahi. Agar dono conditions true hain to iska matlab hai ki selected user aur active user same chat me hain.
+
+
+
+
   const [input, setInput] = useState("");
   const messageRef= useRef(null);
 
@@ -123,7 +130,7 @@ const ChatWindow = ({
  return (
   <div className="flex-1 flex flex-col h-full bg-[#040712]/60">
 
-    <ChatHeader selectedUser={selectedUser} setActivePanel={setActivePanel} online={online} activeUser={activeUser} selectedChat={selectedChat}/>
+    <ChatHeader selectedUser={selectedUser} setActivePanel={setActivePanel} online={online} activeUser={activeUser} selectedChat={selectedChat} isSelectedUserInSameChat={isSelectedUserInSameChat}/>
 
     <div className="flex-1 overflow-y-auto px-6 py-4 space-y-4">
       {(messages || []).length === 0 ? (
@@ -137,6 +144,7 @@ const ChatWindow = ({
             msg={msg}
             currentUser={currentUser}
             setMessages={setMessages}
+            isSelectedUserInSameChat={isSelectedUserInSameChat}
           />
         ))
       )}
