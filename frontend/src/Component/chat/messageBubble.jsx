@@ -49,6 +49,14 @@ const MessageBubble = ({ msg, currentUser,setMessages,isSelectedUserInSameChat,s
 
       try{
 
+
+        console.log("DELETE EVERYONE CLICKED", {
+          messageId: msg._id,
+          chatId: typeof msg.chat === "object" ? msg.chat._id : msg.chat,
+          recieverId: selectedUser?._id,
+        });
+
+
         const response= await api.post('/message/deleteforeveryone',{
             messageId:msg._id,
             chatId:typeof msg.chat === "object" ? msg.chat._id: msg.chat,
@@ -60,6 +68,10 @@ const MessageBubble = ({ msg, currentUser,setMessages,isSelectedUserInSameChat,s
 
         setDeleteOption(false);
         setOpenMenu(null);
+
+
+
+        
       }
       catch(error){
         console.log(error);

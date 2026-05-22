@@ -44,8 +44,10 @@ router.post('/request/reject',authMiddleware,rejectRequest);
 
 //delete message routes
 router.post('/message/deleteforme',authMiddleware,deleteForMe);
-router.post('/message/deleteforeveryone',authMiddleware,deleteForEveryone);
-
+router.post('/message/deleteforeveryone', authMiddleware, (req,res,next)=>{
+  console.log("DELETE ROUTE HIT");
+  next();
+}, deleteForEveryone);
 
 
 router.get('/me',protect,(req,res)=>{
