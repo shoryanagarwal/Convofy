@@ -80,6 +80,7 @@ const deleteForEveryone = async(req,res)=>{
 
 
         const alreadySeen= message.seenBy?.some(id=>id.toString()===recieverId);
+
         if(alreadySeen){
             return res.status(400).json({
                 success:false,
@@ -101,6 +102,9 @@ const deleteForEveryone = async(req,res)=>{
 
         const io=req.app.get('io');
         io.to(chatId).emit('message-deleted',message);
+
+        console.log("MESSAGE SENDER:", message.sender.toString());
+        console.log("REQ USER:", req.user._id?.toString() || req.user.id);
 
 
         

@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import api from "../../Api/axios.js";
 const MessageBubble = ({ msg, currentUser,setMessages,isSelectedUserInSameChat,selectedUser,setOpenMenu,openMenu }) => {
-  const senderId = typeof msg.sender === "object" ? msg.sender._id : msg.sender;
-  const isMe = senderId === currentUser._id;
+const senderId =
+  typeof msg.sender === "object" ? msg.sender._id : msg.sender;
+
+const isMe = senderId?.toString() === currentUser?._id?.toString();
 
   const [deleteOption,setDeleteOption] = useState(false)
 
