@@ -165,14 +165,16 @@ const StartServer = async () => {
 
             socket.on('new message', async (newMessage) => {
                 try {
-                    const { content, sender, chatId } = newMessage;
+                    const { content, sender, chatId,mediaUrl,messageType } = newMessage;
 
-                    if (!content || !sender || !chatId) return;
+                    if ((!content && !mediaUrl) || !sender || !chatId ) return;
 
                     let message = await Message.create({
                         sender: sender._id,
                         content,
-                        chat: chatId
+                        chat: chatId,
+                        mediaUrl: mediaUrl || "",
+                        messageType: messageType || "text"
                     });
 
                     message = await message.populate('sender', 'username');

@@ -140,9 +140,9 @@ const sendMessage = async (req, res) => {
 
     try {
 
-        const { content, chatId } = req.body;
+        const { content, chatId ,mediaUrl,messageType } = req.body;
 
-        if (!content || !chatId) {
+        if ((!content && !mediaUrl) || !chatId) {
 
             return res.status(400).json({
                 success: false,
@@ -156,7 +156,10 @@ const sendMessage = async (req, res) => {
 
             sender: req.user.id,
             content: content,
-            chat: chatId
+            chat: chatId,
+            mediaUrl: mediaUrl || "",
+            messageType: messageType || "text"
+            
 
         });
 
