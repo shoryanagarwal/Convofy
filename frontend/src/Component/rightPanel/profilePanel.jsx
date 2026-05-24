@@ -56,7 +56,7 @@ const ProfilePanel = ({
         Shared Images
       </h3>
 
-      {sharedImages.length === 0 ? (
+      {sharedImage.length === 0 ? (
 
         <p className="text-sm text-gray-500">
           No shared images yet
