@@ -102,7 +102,7 @@ const StartServer = async () => {
                 io.emit('active-chat',Object.fromEntries(activeUser));
 
 
-                io.emit('message-seen',{chatId,userId})
+                io.to(chatId).emit('message-seen',{chatId,userId})
 
             });
 
