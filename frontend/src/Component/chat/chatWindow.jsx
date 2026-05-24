@@ -27,7 +27,7 @@ const ChatWindow = ({
   const messageRef= useRef(null);
 
   const [typing,setTyping]=useState(false);
-  const [openMenu, setOpenMenu]=useState(false);
+  const [openMenu, setOpenMenu]=useState(null);
 
 
   useEffect(()=>{
@@ -109,7 +109,52 @@ const ChatWindow = ({
           socket.off("message-deleted");
         }
 
+
+
+
   },[])
+
+
+
+//effect to listen the seenBy event and update the messages state accordingly
+
+useEffect(()=>{
+
+    socket.on("message-seen",({userId})=>{
+
+
+        setMessages((prev)=>
+
+          prev.map((msg)=>{
+            const senderId= typeof msg.sender === "object"?msg.sender._id : msg.sender;
+            if(senderId === userId){
+              return msg; // If the sender of the message is the same as the userId received in the event, return the message as is without updating
+            }
+
+            const alreadySeen = msg.seenBy.some((id)=> id.toString()===userId)
+
+
+
+            if(alreadySeen){
+              return msg
+            }
+
+            return {
+               ...msg,
+               seenBy:[...(msg.seenBy||[]),userId]
+            }
+        
+        })
+      )
+    })
+
+
+
+    return ()=>{
+      socket.off("message-seen")
+    }
+
+},[])
 
 
 
