@@ -75,6 +75,9 @@ const MessageInput = ({ input, setInput, selectedChat, setMessages }) => {
       const newMessage = {
         content: input,
         chatId: selectedChat._id,
+        mediaUrl: imageUrl || "", // Include the image URL if available
+
+        messageType: imageUrl ? "image" : "text", // Set message type based on whether an image is included
         sender: {
           _id: JSON.parse(localStorage.getItem("user"))._id,
           username: JSON.parse(localStorage.getItem("user")).username
@@ -91,6 +94,8 @@ const MessageInput = ({ input, setInput, selectedChat, setMessages }) => {
 
       socket.emit("new message", newMessage);
       setInput("");
+      setSelectedImage(null); // Clear the selected image after sending the message
+      imageInputRef.current.value = null;
     } catch (error) {
       console.log(error);
     }
