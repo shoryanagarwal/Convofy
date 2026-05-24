@@ -14,7 +14,7 @@ const uploadImage=async(req,res)=>{
             return  res.status(200).json({
                 success:true,
                 message:"File uploaded successfully",
-                imageUrl:req.file.filename
+                imageUrl:req.file.location
             })
 
 
