@@ -113,8 +113,24 @@ const isMe = senderId?.toString() === currentUser?._id?.toString();
             </span>
 
 
+        ): msg.messageType==="image" ?(
+
+            <div className="space-y-2">
+
+                <img src={msg.mediaUrl} 
+                alt="Shared Image"
+                className="max-w-[250px] max-h-[320px] rounded-xl object-cover"
+                />
+
+
+                 {msg.content && (
+                  <p>{msg.content}</p>
+                )}
+
+            </div>
+
         ):
-        (msg.content)        
+        (msg.content)      
         }
       </div>
 
