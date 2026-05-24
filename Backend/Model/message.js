@@ -19,7 +19,7 @@ const messageSchema=mongoose.Schema({
 
     content:{
         type:String,
-        required:true,
+        
         trim:true
         
     },
@@ -58,7 +58,14 @@ const messageSchema=mongoose.Schema({
             type:mongoose.Schema.Types.ObjectId,
             ref:'User'
         }
-    ]
+    ],
+
+    mediaUrl: {
+        type: String,
+        default: ""
+    }
+
+
 
 
 

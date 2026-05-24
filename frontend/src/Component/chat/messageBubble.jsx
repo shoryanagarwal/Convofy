@@ -9,7 +9,8 @@ const isMe = senderId?.toString() === currentUser?._id?.toString();
   const [deleteOption,setDeleteOption] = useState(false)
 
   const hasRecieverSeen = msg.seenBy?.some((id)=>id.toString()===selectedUser?._id)
-  
+  const isDeleted =
+  msg.isDeletedEveryone || msg.deletedFor?.includes(currentUser._id);
   const menuOpen= openMenu === msg._id;
   const deleteForMe = async()=>{
 
@@ -89,7 +90,7 @@ const isMe = senderId?.toString() === currentUser?._id?.toString();
     <div 
     onClick={(e) => e.stopPropagation()}
     className={`group relative flex ${isMe ? "justify-end" : "justify-start"}`}>
-      {isMe && (
+      {isMe && !isDeleted && (
         <button onClick={()=>{
           
             setOpenMenu(menuOpen ?null : msg._id )
@@ -118,7 +119,7 @@ const isMe = senderId?.toString() === currentUser?._id?.toString();
       </div>
 
 
-      {!isMe && (
+      {!isMe &&  !isDeleted &&(
           <button className ="opacity-100 md:opacity-0 md:group-hover:opacity-100 transition text-gray-400 hover:text-white px-2"
           onClick={(e)=>{
             e.stopPropagation();

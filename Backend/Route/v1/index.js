@@ -1,11 +1,11 @@
 const express=require('express');
 const protect = require('../../Middleware/protect.js')
 const router=express.Router();
-
+const {uploadImage} = require('../../Controller/uploadController.js')
 const authMiddleware=require('../../Middleware/AuthMiddleware.js');
 const {getAllUsers} = require('../../Controller/usercontroller.js')
 const {registerUser,LoginUser} = require('../../Controller/auth_controller.js')
-
+const {upload} = require('../../Config/awsConfig.js')
 const {oneOnOneChat,userChat}=require('../../Controller/chatcontroller.js')
 const {sendMessage,getMessage,deleteForEveryone,deleteForMe}=require('../../Controller/message_controller.js')
 
@@ -57,6 +57,10 @@ router.get('/me',protect,(req,res)=>{
   });
 
 })
+
+//image upload route
+router.post('/upload/image',upload.single('image'),uploadImage)
+
 
 router.get('/connections/:userId',authMiddleware,getConnection)
 

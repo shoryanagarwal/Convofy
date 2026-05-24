@@ -1,9 +1,13 @@
 import React from "react";
 import socket from "../../Socket/socket.js";
-import { useRef } from "react";
+import { useRef,useState } from "react";
 
 const MessageInput = ({ input, setInput, selectedChat, setMessages }) => {
     const typingTimeoutRef = useRef(null);
+    const [selectedImage,setSelectedImage]=useState(null);
+    const imageInputRef=useRef(null);
+
+ 
    const handleTyping=(e)=>{
 
         setInput(e.target.value);
@@ -55,6 +59,32 @@ const MessageInput = ({ input, setInput, selectedChat, setMessages }) => {
 
   return (
     <div className="h-[82px] border-t border-white/10 flex items-center px-5 gap-3 bg-[#070b18]/70 backdrop-blur-xl">
+      
+      <button
+          type="button"
+          onClick={() => imageInputRef.current.click()}
+        >
+          +
+      </button>
+
+
+      <input type="file"
+        ref={imageInputRef}
+        accept="image/*"
+        className="hidden"
+        onChange={(e)=>{
+          const file=e.target.files[0]; // Get the selected file
+
+
+          if(file){
+            console.log("Selected file:", file);
+            setSelectedImage(file);
+          }
+        }}
+      >
+        
+      </input>
+      
       <input
         type="text"
         placeholder="Type a message..."
@@ -65,6 +95,8 @@ const MessageInput = ({ input, setInput, selectedChat, setMessages }) => {
         }}
         className="flex-1 h-[50px] bg-white/[0.04] rounded-2xl px-5 outline-none text-sm text-white placeholder:text-gray-500 border border-white/10 focus:border-[#d6ad4a]/40 transition"
       />
+
+      
 
       <button
         onClick={sendMessage}
