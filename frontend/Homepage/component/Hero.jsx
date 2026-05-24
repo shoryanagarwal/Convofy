@@ -94,10 +94,75 @@ const Hero = ()=>{
 
                 {/* right side image */}
 
-                <div className="bg-[#111111] border border-white/10 rounded-3xl h-125 flex flex-centre justify-center items-center text-zinc-500">
+                <div className="relative">
 
-                    Chat UI Preview
-                </div>
+  <div className="absolute -top-8 -left-8 w-40 h-40 bg-blue-500/20 blur-3xl rounded-full" />
+
+  <div className="absolute -bottom-8 -right-8 w-40 h-40 bg-yellow-500/10 blur-3xl rounded-full" />
+
+  <div className="relative bg-[#111111]/90 border border-white/10 rounded-3xl p-5 backdrop-blur-xl shadow-2xl">
+
+    {/* HEADER */}
+    <div className="flex items-center justify-between border-b border-white/10 pb-4">
+
+      <div className="flex items-center gap-3">
+
+        <div className="w-11 h-11 rounded-full bg-gradient-to-br from-blue-500 to-cyan-400 flex items-center justify-center text-white font-semibold">
+          A
+        </div>
+
+        <div>
+          <h3 className="text-white font-medium">
+            Alex Morgan
+          </h3>
+
+          <p className="text-xs text-green-400">
+            Online
+          </p>
+        </div>
+
+      </div>
+
+      <div className="text-zinc-500">
+        ⋮
+      </div>
+
+    </div>
+
+    {/* CHAT */}
+    <div className="mt-5 space-y-4">
+
+      <div className="bg-white/5 border border-white/5 rounded-2xl px-4 py-3 text-sm text-zinc-200 w-fit max-w-[80%]">
+        Hey 👋 Welcome to Convofy
+      </div>
+
+      <div className="ml-auto bg-[#d6ad4a] text-black rounded-2xl px-4 py-3 text-sm w-fit max-w-[80%]">
+        This UI looks insane 🚀
+      </div>
+
+      <img
+        src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=1200&auto=format&fit=crop"
+        alt="preview"
+        className="rounded-2xl h-52 w-full object-cover border border-white/10"
+      />
+
+      <div className="bg-white/5 border border-white/5 rounded-2xl px-4 py-3 text-sm text-zinc-200 w-fit max-w-[80%]">
+        Realtime messaging + image sharing ⚡
+      </div>
+
+      <div className="flex gap-1 px-2">
+
+        <span className="w-2 h-2 rounded-full bg-zinc-500 animate-bounce" />
+        <span className="w-2 h-2 rounded-full bg-zinc-500 animate-bounce delay-100" />
+        <span className="w-2 h-2 rounded-full bg-zinc-500 animate-bounce delay-200" />
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
 
 
             </div>
