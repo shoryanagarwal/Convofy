@@ -9,15 +9,10 @@ const ChatHeader = ({ selectedUser ,setActivePanel , online=[], activeUser , sel
 
   return (
     <div className="h-18px border-b border-white/10 flex items-center justify-between px-6 bg-[#070b18]/70 backdrop-blur-xl">
-      <div 
-        onClick={()=>setActivePanel("profile")}
-      className="flex items-center gap-3 cursor-pointer">
-
+      <div className="flex items-center gap-3">
 
            <button
-              onClick={(e) =>{
-                e.stopPropagation()
-                setActivePanel("chats")}}
+              onClick={() => setActivePanel("chats")}
               className="md:hidden w-9 h-9 rounded-xl bg-white/[0.06] text-white flex items-center justify-center"
             >
               ←
@@ -39,7 +34,7 @@ const ChatHeader = ({ selectedUser ,setActivePanel , online=[], activeUser , sel
           />
 
           <p className={`text-xs ${isInSameChat ? "text-blue-400" : isOnline?"text-green-400" : "text-red-500"}`}>
-            {isInSameChat?"Active in this chat ":isOnline ? "Online" : "Offline"}
+            {isInSameChat?"Active int this chat ":isOnline ? "Online" : "Offline"}
           </p>
 </div>
         </div>
