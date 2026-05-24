@@ -123,6 +123,8 @@ const deleteForEveryone = async(req,res)=>{
         
     } 
     catch (error) {
+        console.log("DELETE FOR EVERYONE ERROR:", error);
+      
         res.status(500).json({
             success:false,
             message:"Unable to delete message for everyone",
