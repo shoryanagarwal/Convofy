@@ -294,7 +294,7 @@ useEffect(() => {
             </div>
 
             <div className="hidden lg:block border-l border-white/10 bg-[#070b18]/60 backdrop-blur-xl">
-              <ProfilePanel />
+              <ProfilePanel selectedUser={selectedUser} online={online} activeUser={activeUser} messages={messages} />
             </div>
           </>
         ) : (
