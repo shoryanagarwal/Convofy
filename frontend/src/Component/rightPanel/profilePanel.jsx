@@ -5,8 +5,9 @@ const ProfilePanel = ({
   selectedUser,
   activeUser = {},
   messages = [],
+  setActivePanel,
+  mobileView=false
 }) => {
-  console.log("messages",messages);
   const sharedImage= messages.filter((msg)=>msg.messageType==="image" && msg.mediaUrl)
 
   const isOnline = selectedUser && online.includes(selectedUser._id);
@@ -15,7 +16,19 @@ const ProfilePanel = ({
 
 
   return (
-    <div className="w-[270px] bg-[#070b18]/70 border-l border-white/10 p-5 hidden lg:block backdrop-blur-xl">
+        <div
+        className={`${
+          mobileView ? "block w-full" : "hidden lg:block w-[270px]"
+        } bg-[#070b18]/70 border-l border-white/10 p-5 backdrop-blur-xl overflow-y-auto`}
+      >
+      {mobileView && (
+        <button
+          onClick={() => setActivePanel("chat")}
+          className="mb-4 text-white"
+        >
+          ← Back
+        </button>
+      )}
       <div className="flex flex-col items-center rounded-3xl bg-white/[0.035] border border-white/10 p-6">
         <div className="w-24 h-24 rounded-full bg-gradient-to-br from-[#1c2b58] to-[#0b1020] border border-white/10 flex items-center justify-center text-3xl font-light">
           {selectedUser?.username?.charAt(0)?.toUpperCase() || "U"}

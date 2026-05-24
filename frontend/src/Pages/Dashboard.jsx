@@ -226,24 +226,26 @@ useEffect(() => {
   
 
   return (
-  <div className="relative h-screen w-full overflow-hidden bg-[#02040c] text-white">
+  <div className="relative min-h-screen w-full overflow-hidden bg-[#02040c] text-white">
     {/* background */}
     <div className="absolute inset-0 bg-[radial-gradient(circle_at_15%_25%,rgba(35,70,150,0.28),transparent_35%),radial-gradient(circle_at_85%_80%,rgba(190,135,35,0.14),transparent_30%),linear-gradient(135deg,#02040c,#050816,#02030a)]" />
 
     <div className="absolute -left-48 top-20 h-130px w-130px rounded-full border border-blue-400/25 shadow-[0_0_90px_rgba(59,130,246,0.25)]" />
-
     <div className="absolute -right-56 bottom-40px h-140px w-140px rounded-full border border-yellow-500/20 shadow-[0_0_90px_rgba(212,175,55,0.12)]" />
-
     <div className="absolute inset-0 opacity-30 bg-[radial-gradient(rgba(255,255,255,0.6)_1px,transparent_1px)] bg-size-[120px_120px]" />
 
-    <div className="relative z-10 flex h-screen w-full overflow-hidden">
-      {/* SIDEBAR */}
-      <div className="border-r border-white/10 bg-black/20 backdrop-blur-xl">
+    <div className="relative z-10 flex h-[100dvh] w-full overflow-hidden pb-16 md:pb-0">
+      {/* SIDEBAR / MOBILE BOTTOM NAV */}
+      <div className="fixed bottom-0 left-0 right-0 z-50 h-16 border-t border-white/10 bg-[#060914]/95 backdrop-blur-xl md:relative md:h-full md:w-auto md:border-t-0 md:border-r">
         <LeftSidebar setActivePanel={setActivePanel} />
       </div>
 
-    
-      <div className={`${activePanel==="chat" ? "hidden md:block" : "block" } h-full w-[calc(100vw-64px)] md:w-[340px] border-r border-white/10 bg-[#070b18]/60 backdrop-blur-xl`}>
+      {/* LEFT / LIST PANEL */}
+      <div
+        className={`${
+          activePanel === "chat" ? "hidden md:block" : "block"
+        } h-full w-full md:w-[340px] border-r border-white/10 bg-[#070b18]/60 backdrop-blur-xl`}
+      >
         {activePanel === "search" && (
           <SearchPanel
             users={users}
@@ -255,17 +257,16 @@ useEffect(() => {
             setActivePanel={setActivePanel}
             activeUser={activeUser}
             connections={connections}
-            setActivePanel={setActivePanel}
           />
         )}
 
-      {activePanel==="requests" && (
-  <RequestPanel setActivePanel={setActivePanel} />
-)}
-        {activePanel==="chats" && (
+        {activePanel === "requests" && (
+          <RequestPanel setActivePanel={setActivePanel} />
+        )}
+
+        {activePanel === "chats" && (
           <ChatList
             connections={connections}
-            online={online}
             selectedUser={selectedUser}
             setSelectedUser={setSelectedUser}
             setSelectedChat={setSelectedChat}
@@ -277,49 +278,71 @@ useEffect(() => {
         )}
       </div>
 
-      <div className={` ${activePanel==="chat" ? "flex" : "hidden md:flex"} flex flex-1 overflow-hidden bg-black/10`}>
-        {activePanel==="chat" ? (
-          <>
-            <div className="flex-1">
-              <ChatWindow
-                selectedUser={selectedUser}
-                selectedChat={selectedChat}
-                messages={messages}
-                setMessages={setMessages}
-                currentUser={currentUser}
-                setActivePanel={setActivePanel}
-                online={online}
-                activeUser={activeUser}
-              />
+     
+        <div
+          className={`${
+            activePanel === "chat" || activePanel === "profile"
+              ? "flex"
+              : "hidden md:flex"
+          } flex flex-1 overflow-hidden bg-black/10`}
+        >
+          {activePanel === "profile" ? (
+            <ProfilePanel
+              selectedUser={selectedUser}
+              online={online}
+              activeUser={activeUser}
+              messages={messages}
+              setActivePanel={setActivePanel}
+              mobileView={true}
+            />
+          ) : activePanel === "chat" ? (
+            <>
+              <div className="flex-1 min-w-0">
+                <ChatWindow
+                  selectedUser={selectedUser}
+                  selectedChat={selectedChat}
+                  messages={messages}
+                  setMessages={setMessages}
+                  currentUser={currentUser}
+                  setActivePanel={setActivePanel}
+                  online={online}
+                  activeUser={activeUser}
+                />
+              </div>
+
+              <div className="hidden lg:block border-l border-white/10 bg-[#070b18]/60 backdrop-blur-xl">
+                <ProfilePanel
+                  selectedUser={selectedUser}
+                  online={online}
+                  activeUser={activeUser}
+                  messages={messages}
+                />
+              </div>
+            </>
+          ) : (
+            <div className="flex flex-1 items-center justify-center px-6">
+              <div className="max-w-md rounded-3xl border border-white/10 bg-white/4 p-10 text-center backdrop-blur-xl shadow-2xl">
+                <h1 className="text-4xl font-light tracking-wide">
+                  Convo<span className="text-[#d6ad4a]">fy</span>
+                </h1>
+
+                <p className="mt-4 text-sm leading-6 text-gray-400">
+                  Select a chat or search users to start a conversation.
+                </p>
+
+                <div className="mt-7 h-px w-full bg-linear-to-r from-transparent via-white/20 to-transparent" />
+
+                <p className="mt-5 text-xs text-gray-500">
+                  Premium private messaging space
+                </p>
+              </div>
             </div>
-
-            <div className="hidden lg:block border-l border-white/10 bg-[#070b18]/60 backdrop-blur-xl">
-              <ProfilePanel selectedUser={selectedUser} online={online} activeUser={activeUser} messages={messages} />
-            </div>
-          </>
-        ) : (
-          <div className="flex flex-1 items-center justify-center px-6">
-            <div className="max-w-md rounded-3xl border border-white/10 bg-white/4 p-10 text-center backdrop-blur-xl shadow-2xl">
-              <h1 className="text-4xl font-light tracking-wide">
-                Convo<span className="text-[#d6ad4a]">fy</span>
-              </h1>
-
-              <p className="mt-4 text-sm leading-6 text-gray-400">
-                Select a chat or search users to start a conversation.
-              </p>
-
-              <div className="mt-7 h-px w-full bg-linear-to-r from-transparent via-white/20 to-transparent" />
-
-              <p className="mt-5 text-xs text-gray-500">
-                Premium private messaging space
-              </p>
-            </div>
-          </div>
-        )}
-      </div>
+          )}
+        </div>
     </div>
   </div>
 );
+
 };
 
 export default Dashboard;
