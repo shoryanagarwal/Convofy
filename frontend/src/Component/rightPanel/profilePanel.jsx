@@ -1,7 +1,12 @@
 import React from "react";
 
-const ProfilePanel = (online,selectedUser,activeUser,messages) => {
-
+const ProfilePanel = ({
+  online = [],
+  selectedUser,
+  activeUser = {},
+  messages = [],
+}) => {
+  console.log("messages",messages);
   const sharedImage= messages.filter((msg)=>msg.messageType==="image" && msg.mediaUrl)
 
   const isOnline = selectedUser && online.includes(selectedUser._id);
@@ -61,7 +66,7 @@ const ProfilePanel = (online,selectedUser,activeUser,messages) => {
 
         <div className="grid grid-cols-2 gap-3">
 
-          {sharedImages.map((msg) => (
+          {sharedImage.map((msg) => (
             <img
               key={msg._id}
               src={msg.mediaUrl}
