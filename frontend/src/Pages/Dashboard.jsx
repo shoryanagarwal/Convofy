@@ -226,8 +226,7 @@ useEffect(() => {
   
 
   return (
-  <div className="relative h-screen w-full overflow-hidden bg-[#02040c] text-white">
-    {/* background */}
+ <div className="relative min-h-screen w-full overflow-hidden bg-[#02040c] text-white">
     <div className="absolute inset-0 bg-[radial-gradient(circle_at_15%_25%,rgba(35,70,150,0.28),transparent_35%),radial-gradient(circle_at_85%_80%,rgba(190,135,35,0.14),transparent_30%),linear-gradient(135deg,#02040c,#050816,#02030a)]" />
 
     <div className="absolute -left-48 top-20 h-130px w-130px rounded-full border border-blue-400/25 shadow-[0_0_90px_rgba(59,130,246,0.25)]" />
@@ -236,7 +235,7 @@ useEffect(() => {
 
     <div className="absolute inset-0 opacity-30 bg-[radial-gradient(rgba(255,255,255,0.6)_1px,transparent_1px)] bg-size-[120px_120px]" />
 
-    <div className="relative z-10 flex h-screen w-full overflow-hidden">
+    <div className="relative z-10 flex min-h-screen w-full overflow-hidden">
       {/* SIDEBAR */}
       <div className="border-r border-white/10 bg-black/20 backdrop-blur-xl">
         <LeftSidebar setActivePanel={setActivePanel} />
