@@ -49,6 +49,8 @@ const MessageInput = ({ input, setInput, selectedChat, setMessages }) => {
 
           })
 
+          console.log("Image uploaded successfully:",response.data);
+
 
           return response.data.imageUrl
 
