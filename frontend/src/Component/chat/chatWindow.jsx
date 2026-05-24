@@ -129,7 +129,7 @@ const ChatWindow = ({
   }, [selectedChat]);
 
  return (
-  <div className="flex-1 flex flex-col h-full bg-[#040712]/60">
+  <div className="py-2 flex-1 flex flex-col h-full bg-[#040712]/60">
 
     <ChatHeader selectedUser={selectedUser} setActivePanel={setActivePanel} online={online} activeUser={activeUser} selectedChat={selectedChat} isSelectedUserInSameChat={isSelectedUserInSameChat}/>
 
