@@ -2,6 +2,8 @@ import React from "react";
 import socket from "../../Socket/socket.js";
 import { useRef,useState } from "react";
 
+import api from "../../Api/axios.js";
+
 const MessageInput = ({ input, setInput, selectedChat, setMessages }) => {
     const typingTimeoutRef = useRef(null);
     const [selectedImage,setSelectedImage]=useState(null);
@@ -25,10 +27,47 @@ const MessageInput = ({ input, setInput, selectedChat, setMessages }) => {
 
 
     }
+
+
+
+    const uploadImage =async()=>{
+
+      if(!selectedImage) return;
+
+      const formData= new FormData() ; // Create a FormData object to send the image file
+
+      formData.append('image',selectedImage);
+
+
+      try {
+
+          const response=await api.post('/upload/image',formData,{
+              headers:{
+                  'Content-Type':'multipart/form-data'
+
+              }
+
+          })
+
+
+          return response.data.imageUrl
+
+      }
+      catch(error){
+        console.log("Error uploading image:",error);
+      }
+
+
+    }
  
  
  
   const sendMessage = async () => {
+
+
+    const imageUrl = await uploadImage();
+
+    console.log(imageUrl);
     if (!input.trim()) return;
     if (!selectedChat) return;
 
@@ -62,7 +101,7 @@ const MessageInput = ({ input, setInput, selectedChat, setMessages }) => {
       
       <button
           type="button"
-          onClick={() => imageInputRef.current.click()}
+          onClick={() => imageInputRef.current.click()} // Trigger the hidden file input when the button is clicked
         >
           +
       </button>
