@@ -68,7 +68,7 @@ const MessageInput = ({ input, setInput, selectedChat, setMessages }) => {
     const imageUrl = await uploadImage();
 
     console.log(imageUrl);
-    if (!input.trim()) return;
+    if (!input.trim() && !imageUrl) return;
     if (!selectedChat) return;
 
     try {
