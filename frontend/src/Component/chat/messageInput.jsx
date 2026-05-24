@@ -90,7 +90,8 @@ const MessageInput = ({ input, setInput, selectedChat, setMessages }) => {
         ...prev,
         {
           ...newMessage,
-          _id: Date.now()
+          _id: Date.now(),
+          isLocal: true // Mark this message as a local message that hasn't been confirmed by the server yet
         }
       ]);
 
