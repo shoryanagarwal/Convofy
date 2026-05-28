@@ -23,7 +23,8 @@ const StartServer = async () => {
         
        const allowedOrigins = [
         "http://localhost:5173",
-        "https://convofy-one.vercel.app"
+        "https://convofy-one.vercel.app",
+        "https://convofyrca.vercel.app/"
         ];
 
 
