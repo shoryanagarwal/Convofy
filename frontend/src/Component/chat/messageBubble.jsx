@@ -15,6 +15,8 @@ const isMe = senderId?.toString() === currentUser?._id?.toString();
   const hasRecieverSeen = (msg.seenBy || []).some(
   (id) => id.toString() === selectedUser?._id
 );
+const isRealMessage =
+  typeof msg._id === "string" && msg._id.length === 24;
 
 const canDeleteForEveryone =
   isMe && !hasRecieverSeen && !isSelectedUserInSameChat;
@@ -103,7 +105,7 @@ const canDeleteForEveryone =
     <div 
     onClick={(e) => e.stopPropagation()}
     className={`group relative flex ${isMe ? "justify-end" : "justify-start"}`}>
-      {isMe && !isDeleted && (
+      {isMe && !isDeleted && isRealMessage && (
         <button onClick={()=>{
           
             setOpenMenu(menuOpen ?null : msg._id )
@@ -148,7 +150,7 @@ const canDeleteForEveryone =
       </div>
 
 
-      {!isMe &&  !isDeleted &&(
+      {!isMe &&  !isDeleted && isRealMessage&&(
           <button className ="opacity-100 md:opacity-0 md:group-hover:opacity-100 transition text-gray-400 hover:text-white px-2"
           onClick={(e)=>{
             e.stopPropagation();
