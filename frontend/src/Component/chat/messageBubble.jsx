@@ -8,9 +8,16 @@ const isMe = senderId?.toString() === currentUser?._id?.toString();
 
   const [deleteOption,setDeleteOption] = useState(false)
 
-  const hasRecieverSeen = (msg.seenBy || [])?.some((id)=>id.toString()===selectedUser?._id)
+ 
   const isDeleted =
   msg.isDeletedEveryone || msg.deletedFor?.includes(currentUser._id);
+
+  const hasRecieverSeen = (msg.seenBy || []).some(
+  (id) => id.toString() === selectedUser?._id
+);
+
+const canDeleteForEveryone =
+  isMe && !hasRecieverSeen && !isSelectedUserInSameChat;
   const menuOpen= openMenu === msg._id;
   const deleteForMe = async()=>{
 
@@ -180,7 +187,7 @@ const isMe = senderId?.toString() === currentUser?._id?.toString();
 
                     </button>
                     
-                    {isMe  && !hasRecieverSeen && (
+                    {canDeleteForEveryone &&(
                       <button 
                       onClick={deleteForEveryone}
                       className="w-full text-left px-4 py-2 text-sm text-gray-200 hover:bg-white/[0.06]">
