@@ -193,8 +193,7 @@ const StartServer = async () => {
                         latestMessage: message._id
                     });
 
-                    socket.to(chatId).emit('message received', message);
-                    
+                    io.to(chatId).emit("message received", message);                    
 
                 } catch (error) {
                     console.log("SOCKET ERROR:", error);
