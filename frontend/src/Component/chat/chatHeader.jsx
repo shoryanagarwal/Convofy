@@ -34,7 +34,7 @@ const ChatHeader = ({ selectedUser ,setActivePanel , online=[], activeUser , sel
           />
 
           <p className={`text-xs ${isInSameChat ? "text-blue-400" : isOnline?"text-green-400" : "text-red-500"}`}>
-            {isInSameChat?"Active int this chat ":isOnline ? "Online" : "Offline"}
+            {isInSameChat?"Active in this chat ":isOnline ? "Online" : "Offline"}
           </p>
 </div>
         </div>
