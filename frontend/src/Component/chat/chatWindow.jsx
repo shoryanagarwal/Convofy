@@ -133,6 +133,10 @@ useEffect(()=>{
 
             const alreadySeen = msg.seenBy.some((id)=> id.toString()===userId)
 
+            if(alreadySeen){
+              return msg;
+            }
+
 
 
             if(alreadySeen){
