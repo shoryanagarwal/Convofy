@@ -8,7 +8,7 @@ const isMe = senderId?.toString() === currentUser?._id?.toString();
 
   const [deleteOption,setDeleteOption] = useState(false)
 
-  const hasRecieverSeen = msg.seenBy?.some((id)=>id.toString()===selectedUser?._id)
+  const hasRecieverSeen = (msg.seenBy || [])?.some((id)=>id.toString()===selectedUser?._id)
   const isDeleted =
   msg.isDeletedEveryone || msg.deletedFor?.includes(currentUser._id);
   const menuOpen= openMenu === msg._id;

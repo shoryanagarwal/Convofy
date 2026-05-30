@@ -120,46 +120,63 @@ const ChatWindow = ({
 
 useEffect(()=>{
 
-    socket.on("message-seen",({userId})=>{
+  const handleMessageSeen=({userId})=>{
+
+      setMessages((prev)=> prev.map((msg)=>{
+          if(!msg){
+              return msg;// If the message is null or undefined, return it as is
+          }
+
+          const senderId= typeof msg.sender === "object" ?msg.sender._id : msg.sender;
+          if(!senderId) return msg; 
 
 
-        setMessages((prev)=>
-
-          prev.map((msg)=>{
-            const senderId= typeof msg.sender === "object"?msg.sender._id : msg.sender;
-            if(senderId === userId){
-              return msg; // If the sender of the message is the same as the userId received in the event, return the message as is without updating
-            }
-
-            const alreadySeen = msg.seenBy.some((id)=> id.toString()===userId)
-
-            if(alreadySeen){
+          if(senderId ===userId.toString()){
               return msg;
-            }
+          }
+          
+          const alreadySeen = (msg.seenBy || []).some(
+            (id)=> id.toString()===userId.toString() // Check if the userId is already in the seenBy array of the message
+          )
+
+
+          if(alreadySeen){
+              return msg; // If the userId is already in the seenBy array, return the message as is
+          }
 
 
 
-            if(alreadySeen){
-              return msg
-            }
+          return{
+              ...msg,
+              seenBy: [...(msg.seenBy || []), userId] // Add the userId to the seenBy array of the message
 
-            return {
-               ...msg,
-               seenBy:[...(msg.seenBy||[]),userId]
-            }
+          }
+     
+        }))
+
+
+
+      
+
+
+
+
+  }
+
+
+    socket.on('message-seen',handleMessageSeen)
         
-        })
-      )
-    })
+        return ()=>{
+            socket.off('message-seen',handleMessageSeen)
+        }
 
 
 
-    return ()=>{
-      socket.off("message-seen")
-    }
+
+
+
 
 },[])
-
 
 
 
