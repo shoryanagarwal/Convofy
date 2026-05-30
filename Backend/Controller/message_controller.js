@@ -56,6 +56,7 @@ const deleteForMe = async(req,res)=>{
 
 
 const deleteForEveryone = async(req,res)=>{
+    console.log("DELETE BODY", req.body);
 
     const {messageId,chatId,recieverId} = req.body;
 

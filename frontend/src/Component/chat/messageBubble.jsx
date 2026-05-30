@@ -60,6 +60,12 @@ const isMe = senderId?.toString() === currentUser?._id?.toString();
         });
 
 
+
+        console.log("MSG FULL OBJECT", msg);
+        console.log("MSG ID", msg._id);
+        console.log("TYPE OF ID", typeof msg._id);
+
+
         const response= await api.post('/message/deleteforeveryone',{
             messageId:msg._id,
             chatId:typeof msg.chat === "object" ? msg.chat._id: msg.chat,
